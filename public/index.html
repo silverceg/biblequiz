@@ -275,6 +275,12 @@ input:focus{box-shadow:0 0 0 4px rgba(255,194,75,.15)}
 .tile.used{opacity:.18;transform:scale(.85);pointer-events:none}
 .tile.bad{border-color:var(--coral);animation:sh .3s}
 
+/* 오답 잠금 안내 */
+.mgpen{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);z-index:8;pointer-events:none;opacity:0;
+       background:rgba(255,107,107,.95);color:#fff;font-family:var(--display);font-size:22px;padding:14px 26px;border-radius:16px;
+       box-shadow:0 12px 40px rgba(0,0,0,.4);transition:opacity .15s,transform .15s}
+.mgpen.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
 /* 여리고 성 */
 .wall{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:10px;border-radius:16px;background:rgba(255,255,255,.04);
       border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none;perspective:600px}
@@ -885,10 +891,10 @@ function gameCount(m){
       <button class="big" id="c-ok">정답!</button>`;
     $("ctx").textContent = c.q;
     const show = () => { $("cval").textContent = val; };
-    $("c-plus").onpointerdown = (e) => { e.preventDefault(); if (lock) return; val++; show(); };
-    $("c-minus").onpointerdown = (e) => { e.preventDefault(); if (lock) return; val = Math.max(0, val - 1); show(); };
+    $("c-plus").onpointerdown = (e) => { e.preventDefault(); if (lock || locked()) return; val++; show(); };
+    $("c-minus").onpointerdown = (e) => { e.preventDefault(); if (lock || locked()) return; val = Math.max(0, val - 1); show(); };
     $("c-ok").onclick = () => {
-      if (lock) return;
+      if (lock || locked()) return;
       if (val === c.a) {
         lock = true; replay($("cval"), "bump"); ring("var(--mint)"); buzz([25, 40]);
         i++; setProgress(i / set.length);
@@ -896,9 +902,8 @@ function gameCount(m){
         if (i >= set.length) return finishMini();
         setTimeout(() => { lock = false; draw(); }, 600);
       } else {
-        lock = true; replay($("cval"), "wrong"); buzz(160);
-        $("c-ok").textContent = "땡! 다시";
-        setTimeout(() => { lock = false; $("c-ok").textContent = "정답!"; $("cval").classList.remove("wrong"); }, 1200);
+        replay($("cval"), "wrong"); penalty(1500, "땡! 1.5초 멈춤");
+        setTimeout(() => $("cval").classList.remove("wrong"), 1500);
       }
     };
   }
@@ -937,7 +942,7 @@ function gameVerse(m){
       const b = document.createElement("button");
       b.className = "sb"; b.textContent = w;
       b.onclick = () => {
-        if (lock) return;
+        if (lock || locked()) return;
         if (w === v.a) {
           lock = true; b.classList.add("hit"); buzz(20); ring("var(--mint)");
           $("vtx").textContent = v.t.replace("___", v.a);
@@ -945,7 +950,7 @@ function gameVerse(m){
           $("mgsub").textContent = `${i} / ${set.length} 구절`;
           if (i >= set.length) return finishMini();
           setTimeout(() => { lock = false; draw(); }, 520);
-        } else { b.classList.add("miss"); buzz(120); setTimeout(() => b.classList.remove("miss"), 350); }
+        } else { b.classList.add("miss"); penalty(1300); setTimeout(() => b.classList.remove("miss"), 350); }
       };
       grid.appendChild(b);
     });
@@ -975,7 +980,7 @@ function gameCatch(m){
     mark.style.left = pos + "%";
   }
   const tryCatch = () => {
-    if (cool) return; cool = true; setTimeout(() => (cool = false), 220);
+    if (cool || locked()) return; cool = true; setTimeout(() => (cool = false), 220);
     if (pos >= zoneX && pos <= zoneX + zoneW) {
       caught++; speed += .22; buzz([20, 30]); ring("var(--mint)");
       $("csc").textContent = `${caught} / ${GOAL}`; replay($("csc"), "bump");
@@ -983,7 +988,7 @@ function gameCatch(m){
       setProgress(caught / GOAL);
       if (caught >= GOAL) { cancelAnimationFrame(raf); return finishMini(); }
       place();
-    } else { buzz(120); replay($("cbar"), "miss"); }
+    } else { replay($("cbar"), "miss"); penalty(900, "헛손질! 잠깐 멈춤"); }
   };
   $("cbtn").onclick = tryCatch;
   $("cbar").onclick = tryCatch;
@@ -1012,7 +1017,7 @@ function gameScramble(m){
       const b = document.createElement("button");
       b.className = "tile"; b.textContent = t.c;
       b.onclick = () => {
-        if (b.classList.contains("used")) return;
+        if (b.classList.contains("used") || locked()) return;
         if (t.k === step) {
           step++; b.classList.add("used"); buzz(18);
           $("sname").textContent = name.slice(0, step) + "＿".repeat(chars.length - step);
@@ -1022,7 +1027,7 @@ function gameScramble(m){
             if (i >= set.length) return finishMini();
             setTimeout(draw, 550);
           }
-        } else { b.classList.add("bad"); buzz(120); setTimeout(() => b.classList.remove("bad"), 330); }
+        } else { b.classList.add("bad"); penalty(1200); setTimeout(() => b.classList.remove("bad"), 330); }
       };
       grid.appendChild(b);
     });
@@ -1031,6 +1036,20 @@ function gameScramble(m){
   $("mgsub").textContent = "글자를 순서대로 눌러 이름을 만드세요";
   setProgress(0);
 }
+
+/* 틀렸을 때: 잠깐 잠그고(마구 누르기 방지) 호스트에 알린다 */
+function penalty(ms = 1300, msg = "땡! 잠깐 멈춤"){
+  if (!MG) return;
+  MG.lock = true;
+  socket.emit("mini:wrong");
+  buzz(160);
+  let pen = $("mgpen");
+  if (!pen) { pen = document.createElement("div"); pen.id = "mgpen"; pen.className = "mgpen"; $("mgbox").parentElement.appendChild(pen); }
+  pen.textContent = msg; pen.classList.add("on");
+  clearTimeout(MG.penT);
+  MG.penT = setTimeout(() => { MG.lock = false; pen.classList.remove("on"); }, ms);
+}
+const locked = () => !!(MG && MG.lock);
 
 function setProgress(p){
   MG.progress = p;
@@ -1099,6 +1118,7 @@ function gameOrder(m){
       b.innerHTML = `<span class="num"></span><span></span>`;
       b.querySelector("span:last-child").textContent = txt;
       b.onclick = () => {
+        if (locked()) return;
         if (b.classList.contains("done")) return;
         if (txt === set.items[step]) {
           step++; b.classList.add("done");
@@ -1111,7 +1131,7 @@ function gameOrder(m){
             setTimeout(draw, 450);
           }
         } else {
-          b.classList.add("bad"); buzz(120);
+          b.classList.add("bad"); penalty(1300);
           setTimeout(() => b.classList.remove("bad"), 320);
         }
       };
@@ -1142,8 +1162,9 @@ function gameSpeed(m){
   for (let i = 0; i < 6; i++) {
     const b = document.createElement("button");
     b.onclick = () => {
+        if (locked()) return;
       if (b.dataset.real === "1") { score++; b.classList.add("hit"); buzz(20); }
-      else { score = Math.max(0, score - 1); b.classList.add("miss"); buzz(140); }
+      else { score = Math.max(0, score - 1); b.classList.add("miss"); penalty(1000, "가짜 책! 잠깐 멈춤"); }
       $("ssc").textContent = `${score} / ${GOAL}`;
       replay($("ssc"), "bump");
       setProgress(Math.min(1, score / GOAL));

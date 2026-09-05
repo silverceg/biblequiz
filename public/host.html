@@ -141,10 +141,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .mini[data-on="true"]{border-color:var(--accent);color:var(--accent)}
 .key{font-size:13px;color:var(--dim)}
 
-.ticker{height:44px;flex-shrink:0;background:linear-gradient(90deg,var(--accent),#ffd98a);color:#0A0F1C;display:flex;align-items:center;overflow:hidden}
-.ticker .badge{font-family:var(--display);font-size:17px;padding:0 18px;height:100%;display:flex;align-items:center;background:rgba(0,0,0,.82);color:var(--accent);flex-shrink:0;z-index:2}
-.track{display:flex;white-space:nowrap;animation:roll 32s linear infinite;will-change:transform}
-.track span{font-family:var(--display);font-size:20px;padding:0 22px}
+.ticker{height:72px;flex-shrink:0;background:linear-gradient(90deg,var(--accent),#ffd98a);color:#0A0F1C;display:flex;align-items:center;overflow:hidden}
+.ticker .badge{font-family:var(--display);font-size:24px;padding:0 26px;height:100%;display:flex;align-items:center;background:rgba(0,0,0,.82);color:var(--accent);flex-shrink:0;z-index:2}
+.track{display:flex;white-space:nowrap;animation:roll 36s linear infinite;will-change:transform}
+.track span{font-family:var(--display);font-size:34px;padding:0 30px;line-height:72px}
 .track b{color:#5A3B00}
 @keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 /* ══════════════ 애니메이션 추가분 ══════════════ */
@@ -375,6 +375,21 @@ body[data-kind="intro"] .stage{position:relative}
 @media (prefers-reduced-motion:reduce){
   .qc.fx-in,.qc.gone,.in-cat,.in-stars span,.in-pts,.in-no,.in-label,.start .box,.start .hint{animation:none;opacity:1;transform:none}
 }
+/* 오답 보기 / 이름 보기 */
+.peek{margin-left:auto;border-color:var(--coral);color:var(--coral)}
+.peek[data-on="true"]{background:var(--coral);color:#fff}
+.peek b{font-weight:400;font-family:var(--display);margin-left:4px}
+.wrongp{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:10px 12px;border-radius:14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);flex-shrink:0;max-height:120px;overflow-y:auto}
+.wrongp .w{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:10px;padding:6px 12px;font-size:17px}
+.wrongp .w b{font-family:var(--display);color:var(--coral);font-weight:400;font-size:18px}
+.wrongp .none{color:var(--dim);font-size:15px}
+.ac .names{display:none;margin-top:6px;font-size:calc(var(--nf) * .95);color:var(--paper);line-height:1.45;opacity:.85}
+.wall.shownames .ac .names{display:block}
+.wall.shownames .ac .who{color:var(--accent)}
+.opt .names{display:none;flex-basis:100%;font-size:15px;color:var(--paper);opacity:.85;line-height:1.5;margin-top:4px}
+.wall.shownames .opt{flex-wrap:wrap}
+.wall.shownames .opt .names{display:block}
+.rh{flex-wrap:wrap}
 .hide{display:none !important}
 </style>
 </head>
@@ -423,6 +438,7 @@ body[data-kind="intro"] .stage{position:relative}
       <span class="lab">정답</span><span class="val" id="r-ans"></span>
       <span class="lab">배점</span><span class="rpts" id="r-pts">100점</span>
       <span class="tip">카드를 클릭하면 그 답을 쓴 사람 전체가 한 번에 정답 처리됩니다</span>
+      <button class="mini peek" id="r-names">이름 보기</button>
     </div>
     <div class="wall" id="wall"></div>
   </div>
@@ -432,7 +448,9 @@ body[data-kind="intro"] .stage{position:relative}
       <div class="tag hot">미니게임</div>
       <h2 id="mg-name"></h2>
       <div class="d" id="mg-desc"></div>
+      <button class="mini peek" id="mg-wrong">오답 보기 <b id="mg-wn">0</b></button>
     </div>
+    <div class="wrongp hide" id="mg-wrongp"></div>
     <div class="mg-body">
       <div class="podium"><h3 id="mg-ph">완주 순위</h3><div class="fin-list" id="mg-fin"></div></div>
       <div class="race" id="mg-race"></div>
@@ -790,7 +808,8 @@ function renderWall(s){
   const q = s.question;
   const key = s.index + "|" + q.no;
   const fresh = key !== wallKey;
-  if (fresh) { wallKey = key; okSeen = new Set(); }
+  if (fresh) { wallKey = key; okSeen = new Set(); showNames = false; $("r-names").dataset.on = "false"; }
+  $("wall").classList.toggle("shownames", showNames);
   $("r-ans").textContent = q.type === "choice" ? q.options[q.answerIndex] : q.answer;
   $("r-pts").textContent = q.points + "점";
   if (fresh) replay($("r-ans"), "fx-val");
@@ -810,8 +829,9 @@ function renderWall(s){
       const d = document.createElement("div");
       d.className = "opt o" + i + (i === q.answerIndex ? " win" : " lose") + (fresh ? " fx-glow" : "");
       d.innerHTML = `<div class="sym">${SYM[i]}</div><div class="lb"></div>
-        <div class="tally${g && g.correct ? " credited" : ""}">${cnt}명${g && g.correct ? " 정답처리" : ""}</div>`;
+        <div class="tally${g && g.correct ? " credited" : ""}">${cnt}명${g && g.correct ? " 정답처리" : ""}</div><div class="names"></div>`;
       d.querySelector(".lb").textContent = o;
+      d.querySelector(".names").textContent = g ? g.names.join(" · ") : "";
       if (g) {
         d.style.cursor = "pointer";
         d.title = "클릭하면 이 보기를 고른 " + cnt + "명의 정답 처리를 바꿉니다";
@@ -841,25 +861,39 @@ function renderWall(s){
     if (g.correct) okSeen.add(g.key); else okSeen.delete(g.key);
     d.className = "ac " + (g.correct ? "ok " : "") + (just ? "just" : "");
     d.style.animationDelay = fresh ? Math.min(i * 28, 700) + "ms" : "0ms";
-    d.innerHTML = `${g.correct ? '<div class="mk">O</div>' : ""}<div class="tx"></div><div class="who"></div>`;
+    d.innerHTML = `${g.correct ? '<div class="mk">O</div>' : ""}<div class="tx"></div><div class="who"></div><div class="names"></div>`;
     d.querySelector(".tx").textContent = g.text;
     d.querySelector(".who").textContent = g.count + "명";
+    d.querySelector(".names").textContent = (g.names || []).join(" · ");
     d.title = `${g.count}명 · 가장 빠른 제출 ${g.fastest}초`;
     d.onclick = () => { socket.emit("host:toggleGroup", g.key); sfx("toggle"); };
     wall.appendChild(d);
   });
 }
 
+let showWrong = false, showNames = false;
+$("mg-wrong").onclick = (e) => { showWrong = !showWrong; e.currentTarget.dataset.on = showWrong; sfx("click"); if (S) renderMini(S); };
+$("r-names").onclick = (e) => { showNames = !showNames; e.currentTarget.dataset.on = showNames; sfx("click"); $("wall").classList.toggle("shownames", showNames); };
+function renderWrong(m){
+  const rows = m.rows.filter(r => r.wrong > 0).sort((a, b) => b.wrong - a.wrong);
+  $("mg-wn").textContent = rows.reduce((t, r) => t + r.wrong, 0);
+  const p = $("mg-wrongp"); p.classList.toggle("hide", !showWrong);
+  if (!showWrong) return;
+  p.innerHTML = rows.length ? "" : '<div class="none">아직 틀린 사람이 없어요</div>';
+  rows.forEach(r => { const d = document.createElement("div"); d.className = "w"; d.innerHTML = `<span></span><b>✕${r.wrong}</b>`; d.querySelector("span").textContent = r.name; p.appendChild(d); });
+}
+
 let miniKey = "", laneMap = new Map(), finShown = 0;
 function renderMini(s){
   const m = s.mini;
+  renderWrong(m);
   $("mg-name").textContent = m.name;
   $("mg-desc").textContent = s.phase === "minigame" ? m.tip : "게임 종료";
   $("mg-ph").textContent = s.phase === "minigame" ? "완주 순위 (실시간)" : `완주 ${m.doneCount}명`;
 
   if (m.doneCount > lastDone) { sfx(lastDone === 0 ? "mini" : "correct"); lastDone = m.doneCount; }
 
-  if (m.seed !== miniKey) { miniKey = m.seed; finShown = 0; laneMap = new Map(); $("mg-race").innerHTML = ""; }
+  if (m.seed !== miniKey) { miniKey = m.seed; finShown = 0; laneMap = new Map(); $("mg-race").innerHTML = ""; showWrong = false; $("mg-wrong").dataset.on = "false"; renderWrong(m); }
 
   const fin = $("mg-fin"); fin.innerHTML = "";
   if (!m.finishers.length) fin.innerHTML = '<div style="color:var(--dim);font-size:15px;line-height:1.6">' + esc(m.desc) + '</div>';
