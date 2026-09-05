@@ -141,10 +141,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .mini[data-on="true"]{border-color:var(--accent);color:var(--accent)}
 .key{font-size:13px;color:var(--dim)}
 
-.ticker{height:72px;flex-shrink:0;background:linear-gradient(90deg,var(--accent),#ffd98a);color:#0A0F1C;display:flex;align-items:center;overflow:hidden}
-.ticker .badge{font-family:var(--display);font-size:24px;padding:0 26px;height:100%;display:flex;align-items:center;background:rgba(0,0,0,.82);color:var(--accent);flex-shrink:0;z-index:2}
+.ticker{height:90px;flex-shrink:0;background:linear-gradient(90deg,var(--accent),#ffd98a);color:#0A0F1C;display:flex;align-items:center;overflow:hidden}
+.ticker .badge{font-family:var(--display);font-size:28px;padding:0 30px;height:100%;display:flex;align-items:center;background:rgba(0,0,0,.82);color:var(--accent);flex-shrink:0;z-index:2}
 .track{display:flex;white-space:nowrap;animation:roll 36s linear infinite;will-change:transform}
-.track span{font-family:var(--display);font-size:34px;padding:0 30px;line-height:72px}
+.track span{font-family:var(--display);font-size:44px;padding:0 34px;line-height:90px}
 .track b{color:#5A3B00}
 @keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 /* ══════════════ 애니메이션 추가분 ══════════════ */
@@ -383,12 +383,19 @@ body[data-kind="intro"] .stage{position:relative}
 .wrongp .w{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:10px;padding:6px 12px;font-size:17px}
 .wrongp .w b{font-family:var(--display);color:var(--coral);font-weight:400;font-size:18px}
 .wrongp .none{color:var(--dim);font-size:15px}
+.nmbtn{position:absolute;top:8px;left:10px;padding:3px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.35);
+       color:var(--dim);font-size:12px;cursor:pointer;opacity:.75;transition:opacity .15s,color .15s}
+.nmbtn:hover{opacity:1;color:var(--paper)}
+.ac{position:relative}
+.ac .mk{left:auto;right:10px}
 .ac .names{display:none;margin-top:6px;font-size:calc(var(--nf) * .95);color:var(--paper);line-height:1.45;opacity:.85}
-.wall.shownames .ac .names{display:block}
-.wall.shownames .ac .who{color:var(--accent)}
-.opt .names{display:none;flex-basis:100%;font-size:15px;color:var(--paper);opacity:.85;line-height:1.5;margin-top:4px}
-.wall.shownames .opt{flex-wrap:wrap}
-.wall.shownames .opt .names{display:block}
+.ac.open .names{display:block}
+.ac.open .nmbtn{color:var(--accent);border-color:var(--accent);opacity:1}
+.opt{position:relative}
+.opt .nmbtn{top:auto;bottom:8px;left:auto;right:12px}
+.opt .names{display:none;flex-basis:100%;font-size:15px;color:var(--paper);opacity:.85;line-height:1.5;margin-top:4px;padding-right:70px}
+.opt.open{flex-wrap:wrap}
+.opt.open .names{display:block}
 .rh{flex-wrap:wrap}
 .hide{display:none !important}
 </style>
@@ -438,7 +445,6 @@ body[data-kind="intro"] .stage{position:relative}
       <span class="lab">정답</span><span class="val" id="r-ans"></span>
       <span class="lab">배점</span><span class="rpts" id="r-pts">100점</span>
       <span class="tip">카드를 클릭하면 그 답을 쓴 사람 전체가 한 번에 정답 처리됩니다</span>
-      <button class="mini peek" id="r-names">이름 보기</button>
     </div>
     <div class="wall" id="wall"></div>
   </div>
@@ -803,13 +809,26 @@ function renderQuestion(s){
   $("feed-h").textContent = names.length ? `제출한 친구들 ${names.length}명` : "아직 아무도 제출하지 않았어요";
 }
 
+/* 카드 안 '이름' 버튼: 그 답을 쓴 사람만 펼친다 (카드 클릭=정답 처리 와 분리) */
+function attachNames(card, g){
+  const btn = card.querySelector(".nmbtn"), box = card.querySelector(".names");
+  box.textContent = (g.names || []).join(" · ");
+  const open = namesOpen.has(g.key);
+  card.classList.toggle("open", open); btn.textContent = open ? "닫기" : "이름";
+  btn.onclick = (e) => {
+    e.stopPropagation(); sfx("click");
+    if (namesOpen.has(g.key)) namesOpen.delete(g.key); else namesOpen.add(g.key);
+    const now = namesOpen.has(g.key);
+    card.classList.toggle("open", now); btn.textContent = now ? "닫기" : "이름";
+  };
+}
+
 let wallKey = "", okSeen = new Set();
 function renderWall(s){
   const q = s.question;
   const key = s.index + "|" + q.no;
   const fresh = key !== wallKey;
-  if (fresh) { wallKey = key; okSeen = new Set(); showNames = false; $("r-names").dataset.on = "false"; }
-  $("wall").classList.toggle("shownames", showNames);
+  if (fresh) { wallKey = key; okSeen = new Set(); namesOpen = new Set(); }
   $("r-ans").textContent = q.type === "choice" ? q.options[q.answerIndex] : q.answer;
   $("r-pts").textContent = q.points + "점";
   if (fresh) replay($("r-ans"), "fx-val");
@@ -829,9 +848,10 @@ function renderWall(s){
       const d = document.createElement("div");
       d.className = "opt o" + i + (i === q.answerIndex ? " win" : " lose") + (fresh ? " fx-glow" : "");
       d.innerHTML = `<div class="sym">${SYM[i]}</div><div class="lb"></div>
-        <div class="tally${g && g.correct ? " credited" : ""}">${cnt}명${g && g.correct ? " 정답처리" : ""}</div><div class="names"></div>`;
+        <div class="tally${g && g.correct ? " credited" : ""}">${cnt}명${g && g.correct ? " 정답처리" : ""}</div>
+        ${g ? '<button class="nmbtn">이름</button>' : ""}<div class="names"></div>`;
       d.querySelector(".lb").textContent = o;
-      d.querySelector(".names").textContent = g ? g.names.join(" · ") : "";
+      if (g) attachNames(d, g);
       if (g) {
         d.style.cursor = "pointer";
         d.title = "클릭하면 이 보기를 고른 " + cnt + "명의 정답 처리를 바꿉니다";
@@ -861,10 +881,10 @@ function renderWall(s){
     if (g.correct) okSeen.add(g.key); else okSeen.delete(g.key);
     d.className = "ac " + (g.correct ? "ok " : "") + (just ? "just" : "");
     d.style.animationDelay = fresh ? Math.min(i * 28, 700) + "ms" : "0ms";
-    d.innerHTML = `${g.correct ? '<div class="mk">O</div>' : ""}<div class="tx"></div><div class="who"></div><div class="names"></div>`;
+    d.innerHTML = `${g.correct ? '<div class="mk">O</div>' : ""}<div class="tx"></div><div class="who"></div><button class="nmbtn">이름</button><div class="names"></div>`;
     d.querySelector(".tx").textContent = g.text;
     d.querySelector(".who").textContent = g.count + "명";
-    d.querySelector(".names").textContent = (g.names || []).join(" · ");
+    attachNames(d, g);
     d.title = `${g.count}명 · 가장 빠른 제출 ${g.fastest}초`;
     d.onclick = () => { socket.emit("host:toggleGroup", g.key); sfx("toggle"); };
     wall.appendChild(d);
@@ -873,7 +893,7 @@ function renderWall(s){
 
 let showWrong = false, showNames = false;
 $("mg-wrong").onclick = (e) => { showWrong = !showWrong; e.currentTarget.dataset.on = showWrong; sfx("click"); if (S) renderMini(S); };
-$("r-names").onclick = (e) => { showNames = !showNames; e.currentTarget.dataset.on = showNames; sfx("click"); $("wall").classList.toggle("shownames", showNames); };
+let namesOpen = new Set();   // 이름을 펼쳐 둔 답 카드
 function renderWrong(m){
   const rows = m.rows.filter(r => r.wrong > 0).sort((a, b) => b.wrong - a.wrong);
   $("mg-wn").textContent = rows.reduce((t, r) => t + r.wrong, 0);
