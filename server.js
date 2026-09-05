@@ -153,14 +153,15 @@ function answerGroups() {
   const q = currentQuestion();
   if (!q) return [];
   const map = new Map();
-  for (const a of game.answers.values()) {
+  for (const [pid, a] of game.answers.entries()) {
     const key = q.type === "choice" ? "c" + a.choice : normalize(a.text);
     let g = map.get(key);
     if (!g) {
-      g = { key, text: a.text, choice: a.choice, count: 0, correct: !!a.correct, order: a.order, fastest: a.seconds };
+      g = { key, text: a.text, choice: a.choice, count: 0, correct: !!a.correct, order: a.order, fastest: a.seconds, names: [] };
       map.set(key, g);
     }
     g.count++;
+    g.names.push(game.players.get(pid)?.name || "?");
     g.correct = !!a.correct;                        // 그룹은 항상 함께 채점된다
     if (a.order < g.order) { g.order = a.order; g.text = a.text; }
     if (a.seconds < g.fastest) g.fastest = a.seconds;
@@ -175,7 +176,7 @@ function miniView() {
   const q = currentQuestion();
   const rows = [...game.players.values()].map((p) => {
     const r = game.mini.results.get(p.id);
-    return { id: p.id, name: p.name, pct: r ? r.pct : 0, done: !!(r && r.doneAt) };
+    return { id: p.id, name: p.name, pct: r ? r.pct : 0, done: !!(r && r.doneAt), wrong: game.mini.wrongs.get(p.id) || 0 };
   });
   const finishers = game.mini.order.map((pid, i) => ({
     rank: i + 1,
@@ -496,6 +497,14 @@ io.on("connection", (socket) => {
     pushHost();
   });
 
+  // 미니게임에서 틀린 답을 눌렀을 때 (호스트 화면 '오답 보기' 용)
+  socket.on("mini:wrong", () => {
+    const pid = socket.data.playerId;
+    if (!pid || game.phase !== "minigame") return;
+    game.mini.wrongs.set(pid, (game.mini.wrongs.get(pid) || 0) + 1);
+    pushHost();
+  });
+
   socket.on("mini:done", () => {
     const pid = socket.data.playerId;
     if (!pid || game.phase !== "minigame") return;
@@ -516,15 +525,13 @@ io.on("connection", (socket) => {
 });
 
 /* ---------------- 진행 ---------------- */
-const INTRO_MS = 3200;
 function startIntro(idx) {
   if (game.introTimer) clearTimeout(game.introTimer);
   if (game.mini?.timer) clearTimeout(game.mini.timer);
   game.index = idx;
   game.answers.clear(); game.mini = null;
-  game.phase = "intro";
-  game.introUntil = Date.now() + INTRO_MS;
-  game.introTimer = setTimeout(() => { if (game.phase === "intro") openStage(); }, INTRO_MS);
+  game.phase = "intro";          // 호스트가 열 때까지 예고 화면에 머문다
+  game.introUntil = 0;
   pushAll();
 }
 
@@ -537,7 +544,7 @@ function openStage() {
   if (game.mini?.timer) clearTimeout(game.mini.timer);
   game.openedAt = Date.now();
   if (q.type === "minigame") {
-    game.mini = { seed: Math.floor(Math.random() * 1e9), results: new Map(), order: [], timer: null };
+    game.mini = { seed: Math.floor(Math.random() * 1e9), results: new Map(), order: [], timer: null, wrongs: new Map() };
     game.phase = "minigame";
     game.mini.timer = setTimeout(() => { if (game.phase === "minigame") finishMini(); }, q.limit * 1000 + 1200);
   } else {
