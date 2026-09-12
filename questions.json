@@ -2,116 +2,92 @@
   {
     "type": "choice",
     "kind": "bible",
-    "category": "성경책",
-    "difficulty": 3,
-    "text": "성경 66권 중에서 '하나님'이라는 단어가 한 번도 나오지 않는 책은?",
+    "category": "말씀",
+    "difficulty": 1,
+    "text": "\"너희는 그 은혜에 의하여 ( )으로 말미암아 구원을 받았으니 이것은 너희에게서 난 것이 아니요 하나님의 선물이라\"",
     "options": [
-      "아가",
-      "에스더",
-      "전도서",
-      "예레미야애가"
+      "행위",
+      "믿음",
+      "율법",
+      "사랑"
     ],
     "answerIndex": 1,
-    "reference": "에스더서"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "장소",
-    "difficulty": 2,
-    "text": "야곱이 형 에서를 피해 도망가던 밤, 하늘까지 닿은 사닥다리 꿈을 꾼 곳의 이름은?",
-    "answer": "벧엘",
-    "alternates": [
-      "베델",
-      "루스"
-    ],
-    "hint": "'하나님의 집'이라는 뜻입니다",
-    "reference": "창 28:19"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 1,
-    "text": "노아의 방주에 끝내 타지 못한 동물은?",
-    "answer": "물고기",
-    "alternates": [
-      "물고기들",
-      "고기",
-      "생선",
-      "어류",
-      "해양생물"
-    ],
-    "hint": "굳이 탈 이유가 없었죠"
+    "reference": "엡 2:8"
   },
   {
     "type": "choice",
     "kind": "bible",
-    "category": "사건",
-    "difficulty": 2,
-    "text": "출애굽 때 내린 열 가지 재앙 중 아홉 번째 재앙은?",
+    "category": "말씀",
+    "difficulty": 1,
+    "text": "\"교회는 그의 몸이니 만물 안에서 만물을 충만하게 하시는 이의 ( )이니라\"",
     "options": [
-      "메뚜기 떼",
-      "흑암",
-      "우박",
-      "독종"
+      "완성",
+      "충만",
+      "영광",
+      "권세"
     ],
     "answerIndex": 1,
-    "reference": "출 10:21-23"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 2,
-    "text": "모세의 장인이자 미디안 제사장이었던 사람의 이름은?",
-    "answer": "이드로",
-    "alternates": [
-      "르우엘"
-    ],
-    "reference": "출 3:1"
+    "reference": "엡 1:23"
   },
   {
     "type": "choice",
     "kind": "bible",
-    "category": "인물",
+    "category": "말씀",
     "difficulty": 1,
-    "text": "다음 중 예수님의 열두 제자가 아닌 사람은?",
+    "text": "\"그는 우리의 ( )이신지라 둘로 하나를 만드사 원수 된 것 곧 중간에 막힌 담을 자기 육체로 허시고\"",
     "options": [
-      "바돌로매",
-      "다대오",
-      "바나바",
-      "알패오의 아들 야고보"
+      "구원",
+      "소망",
+      "화평",
+      "기쁨"
     ],
     "answerIndex": 2,
-    "hint": "이 사람은 바울의 동역자였습니다",
-    "reference": "마 10:2-4"
+    "reference": "엡 2:14"
   },
   {
-    "type": "short",
+    "type": "choice",
     "kind": "bible",
-    "category": "숫자",
+    "category": "말씀",
     "difficulty": 2,
-    "text": "성경에서 가장 오래 산 사람 므두셀라는 몇 살까지 살았나요?",
-    "answer": "969세",
-    "alternates": [
-      "969",
-      "구백육십구"
+    "text": "\"빛의 열매는 모든 착함과 의로움과 ( )에 있느니라\"",
+    "options": [
+      "사랑함",
+      "진실함",
+      "실천함",
+      "존귀함"
     ],
-    "reference": "창 5:27"
+    "answerIndex": 1,
+    "reference": "엡 5:9"
   },
   {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 1,
-    "text": "성경에서 컴퓨터를 가장 잘 다뤘을 것 같은 사람은? 사과 하나로 온 세상을 바꿨거든요.",
-    "answer": "아담",
-    "alternates": [
-      "아담과하와",
-      "하와",
-      "이브"
-    ]
+    "type": "choice",
+    "kind": "bible",
+    "category": "말씀",
+    "difficulty": 2,
+    "text": "\"평안의 매는 줄로 ( )이 하나 되게 하신 것을 힘써 지키라\"",
+    "options": [
+      "교회",
+      "믿음",
+      "성령",
+      "사랑"
+    ],
+    "answerIndex": 2,
+    "reference": "엡 4:3"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "말씀",
+    "difficulty": 2,
+    "text": "\"찬송하리로다 … 그리스도 안에서 하늘에 속한 모든 ( ) 복을 우리에게 주시되\"",
+    "options": [
+      "넘치는",
+      "크신",
+      "영원한",
+      "신령한"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 1:3"
   },
   {
     "type": "minigame",
@@ -120,365 +96,89 @@
   {
     "type": "choice",
     "kind": "bible",
-    "category": "성경책",
-    "difficulty": 3,
-    "text": "바울이 감옥에 갇혀 있을 때 쓴 '옥중서신'이 아닌 것은?",
+    "category": "말씀",
+    "difficulty": 2,
+    "text": "\"너희의 ( )로 죽었던 너희를 살리셨도다\" 빈칸에 들어갈 말은?",
     "options": [
-      "에베소서",
-      "빌립보서",
-      "골로새서",
-      "로마서"
+      "율법과 심판",
+      "허물과 죄",
+      "악독과 오만",
+      "교만과 방종"
     ],
-    "answerIndex": 3,
-    "reference": "옥중서신 4권"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 3,
-    "text": "다니엘의 세 친구가 풀무불에 던져졌을 때 불렸던 바벨론식 이름 세 개를 모두 말해 보세요.",
-    "answer": "사드락 메삭 아벳느고",
-    "alternates": [
-      "사드락메삭아벳느고"
-    ],
-    "hint": "하나냐, 미사엘, 아사랴의 새 이름입니다",
-    "reference": "단 1:7"
+    "answerIndex": 1,
+    "reference": "엡 2:1"
   },
   {
     "type": "choice",
-    "kind": "bible",
-    "category": "장소",
-    "difficulty": 2,
-    "text": "요한계시록에 나오는 일곱 교회에 속하지 않는 곳은?",
-    "options": [
-      "서머나",
-      "버가모",
-      "고린도",
-      "라오디게아"
-    ],
-    "answerIndex": 2,
-    "reference": "계 2-3장"
-  },
-  {
-    "type": "short",
     "kind": "bible",
     "category": "말씀",
     "difficulty": 2,
-    "text": "예수님이 십자가 위에서 마지막으로 하신 말씀은? (요한복음 기준)",
-    "answer": "다 이루었다",
-    "alternates": [
-      "다이루었다",
-      "다이루었도다"
+    "text": "\"시와 찬송과 ( )들로 서로 화답하며 너희의 마음으로 주께 노래하며\"",
+    "options": [
+      "나팔과 장구",
+      "신령한 노래",
+      "기쁜 춤",
+      "감사의 기도"
     ],
-    "reference": "요 19:30"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 2,
-    "text": "성경 인물 중 눈 검사를 가장 먼저 받아야 했던 사람은? 자기 아들도 못 알아봤습니다.",
-    "answer": "이삭",
-    "alternates": [
-      "이삭이"
-    ],
-    "hint": "야곱을 에서로 착각했죠",
-    "reference": "창 27장"
+    "answerIndex": 1,
+    "reference": "엡 5:19"
   },
   {
     "type": "choice",
     "kind": "bible",
-    "category": "성경책",
+    "category": "말씀",
     "difficulty": 2,
-    "text": "성경에서 가장 긴 장(章)은 어디일까요?",
+    "text": "\"오직 사랑 안에서 참된 것을 하여 범사에 그에게까지 자랄지라 그는 머리니 곧 ( )라\"",
     "options": [
-      "시편 119편",
-      "이사야 53장",
-      "창세기 1장",
-      "마태복음 5장"
+      "그리스도",
+      "예수",
+      "주님",
+      "구세주"
     ],
     "answerIndex": 0,
-    "hint": "176절이나 됩니다",
-    "reference": "시 119편"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "숫자",
-    "difficulty": 2,
-    "text": "요셉이 애굽의 총리가 되어 바로 앞에 섰을 때 그의 나이는?",
-    "answer": "30세",
-    "alternates": [
-      "30",
-      "삼십세",
-      "서른"
-    ],
-    "reference": "창 41:46"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 3,
-    "text": "예수님의 족보(마태복음 1장)에 이름이 나오는 여인이 아닌 사람은?",
-    "options": [
-      "다말",
-      "라합",
-      "룻",
-      "미리암"
-    ],
-    "answerIndex": 3,
-    "reference": "마 1:1-16"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "사건",
-    "difficulty": 2,
-    "text": "엘리야가 하늘로 올라갈 때 나타난 것은 불말과 무엇이었나요?",
-    "answer": "불수레",
-    "alternates": [
-      "불병거",
-      "불의수레",
-      "불마차"
-    ],
-    "reference": "왕하 2:11"
-  },
-  {
-    "type": "minigame",
-    "game": "order"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 2,
-    "text": "성경 인물 중 다이어트가 가장 시급했을 것 같은 이름은? 마태복음 족보에 나옵니다.",
-    "answer": "살몬",
-    "alternates": [
-      "살몬이"
-    ],
-    "hint": "보아스의 아버지입니다",
-    "reference": "마 1:4-5"
-  },
-  {
-    "type": "minigame",
-    "game": "jericho"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "숫자",
-    "difficulty": 1,
-    "text": "오순절 성령 강림 이후 베드로의 설교를 듣고 세례를 받은 사람은 몇 명이었나요?",
-    "options": [
-      "약 120명",
-      "약 500명",
-      "약 3000명",
-      "약 5000명"
-    ],
-    "answerIndex": 2,
-    "reference": "행 2:41"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "말씀",
-    "difficulty": 3,
-    "text": "성경에서 가장 짧은 절인 요한복음 11장 35절의 내용을 그대로 적어 보세요.",
-    "answer": "예수께서 눈물을 흘리시더라",
-    "alternates": [
-      "예수님이눈물을흘리시더라",
-      "예수눈물"
-    ],
-    "reference": "요 11:35"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 1,
-    "text": "사사기에 등장하는 사사 중, 300명의 군사로 미디안을 물리친 사람은?",
-    "options": [
-      "입다",
-      "기드온",
-      "삼갈",
-      "옷니엘"
-    ],
-    "answerIndex": 1,
-    "reference": "삿 7장"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 1,
-    "text": "닭이 가장 만나기 싫어할 것 같은 제자는?",
-    "answer": "베드로",
-    "alternates": [
-      "시몬베드로"
-    ],
-    "hint": "닭 울기 전에 세 번…",
-    "reference": "마 26:75"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 1,
-    "text": "룻기에서 룻이 끝까지 따라간 시어머니의 이름은?",
-    "answer": "나오미",
-    "alternates": [
-      "마라"
-    ],
-    "reference": "룻 1:16"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "성경책",
-    "difficulty": 3,
-    "text": "다음 중 신약성경에서 가장 짧은 책은?",
-    "options": [
-      "유다서",
-      "빌레몬서",
-      "요한이서",
-      "요한삼서"
-    ],
-    "answerIndex": 2,
-    "hint": "헬라어 단어 수 기준입니다",
-    "reference": "요이 1장"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 2,
-    "text": "바울의 1차 전도여행에 함께 떠난 동역자의 이름은?",
-    "answer": "바나바",
-    "alternates": [
-      "바나바와마가"
-    ],
-    "reference": "행 13:2-3"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 1,
-    "text": "성경에서 가장 먼저 사과한 사람은 누구일까요? 아주 유명한 사과였죠.",
-    "answer": "아담",
-    "alternates": [
-      "하와",
-      "아담과하와",
-      "이브"
-    ]
-  },
-  {
-    "type": "minigame",
-    "game": "speed"
+    "reference": "엡 4:15"
   },
   {
     "type": "choice",
     "kind": "bible",
     "category": "말씀",
-    "difficulty": 2,
-    "text": "갈라디아서 5장의 성령의 아홉 가지 열매 중 마지막에 나오는 것은?",
+    "difficulty": 3,
+    "text": "\"그 때에 너희는 그리스도 밖에 있었고 ( ) 나라 밖의 사람이라\" 빈칸에 들어갈 말은?",
     "options": [
-      "온유",
-      "충성",
-      "절제",
-      "화평"
+      "애굽",
+      "바벨론",
+      "이스라엘",
+      "로마"
     ],
     "answerIndex": 2,
-    "reference": "갈 5:22-23"
+    "reference": "엡 2:12"
   },
   {
     "type": "short",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 1,
-    "text": "예수님이 겟세마네 동산에서 기도하실 때 따로 데리고 가신 세 제자는 베드로, 야고보 그리고 누구인가요?",
-    "answer": "요한",
-    "alternates": [
-      "사도요한"
-    ],
-    "reference": "마 26:37"
-  },
-  {
-    "type": "choice",
     "kind": "bible",
     "category": "말씀",
     "difficulty": 1,
-    "text": "'여호와는 나의 목자시니 내게 부족함이 없으리로다'는 몇 편의 시작 구절인가요?",
-    "options": [
-      "시편 1편",
-      "시편 23편",
-      "시편 46편",
-      "시편 121편"
-    ],
-    "answerIndex": 1,
-    "reference": "시 23:1"
-  },
-  {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
-    "difficulty": 1,
-    "text": "홍해가 갈라졌을 때 가장 당황했을 것 같은 존재는? 정해진 답은 없습니다. 재미있게 적어 보세요!",
-    "answer": "물고기",
+    "text": "\"몸이 하나요 ( )도 한 분이시니 이와 같이 너희가 부르심의 한 소망 안에서 부르심을 받았느니라\" 빈칸은?",
+    "answer": "성령",
     "alternates": [
-      "물고기들",
-      "생선",
-      "게",
-      "고기"
+      "성령님"
     ],
-    "hint": "선생님이 웃으면 정답입니다"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "인물",
-    "difficulty": 1,
-    "text": "물맷돌 하나로 거인 골리앗을 쓰러뜨린 소년은?",
-    "options": [
-      "사울",
-      "다윗",
-      "요나단",
-      "삼손"
-    ],
-    "answerIndex": 1,
-    "reference": "삼상 17장"
+    "hint": "엡 4장 첫머리",
+    "reference": "엡 4:4"
   },
   {
     "type": "short",
     "kind": "bible",
-    "category": "장소",
-    "difficulty": 1,
-    "text": "예수님이 태어나신 마을의 이름은?",
-    "answer": "베들레헴",
+    "category": "말씀",
+    "difficulty": 2,
+    "text": "\"육체의 상전에게 순종하기를 ( )께 하듯 하라\" 빈칸에 들어갈 말은?",
+    "answer": "그리스도",
     "alternates": [
-      "베들레햄",
-      "베들레헴 마을"
+      "예수 그리스도",
+      "그리스도께"
     ],
     "hint": "",
-    "reference": "눅 2:4"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "숫자",
-    "difficulty": 1,
-    "text": "예수님이 직접 세우신 제자는 모두 몇 명일까요?",
-    "options": [
-      "7명",
-      "10명",
-      "12명",
-      "70명"
-    ],
-    "answerIndex": 2,
-    "reference": "마 10:1"
+    "reference": "엡 6:5"
   },
   {
     "type": "minigame",
@@ -487,76 +187,172 @@
   {
     "type": "short",
     "kind": "bible",
-    "category": "인물",
+    "category": "말씀",
     "difficulty": 2,
-    "text": "큰 물고기 뱃속에서 사흘 밤낮을 보낸 선지자는?",
-    "answer": "요나",
+    "text": "\"우리 가운데서 역사하시는 능력대로 우리가 ( ) 생각하는 모든 것에 더 넘치도록 능히 하실 이에게\" 빈칸은?",
+    "answer": "구하거나",
     "alternates": [
-      "요나 선지자"
+      "구하거나 "
     ],
-    "hint": "니느웨로 가라는 말씀을 피해 도망갔어요",
-    "reference": "욘 1:17"
-  },
-  {
-    "type": "choice",
-    "kind": "bible",
-    "category": "사건",
-    "difficulty": 2,
-    "text": "여리고 성이 무너진 것은 성을 돌기 시작한 지 며칠째 되던 날이었나요?",
-    "options": [
-      "3일째",
-      "6일째",
-      "7일째",
-      "40일째"
-    ],
-    "answerIndex": 2,
-    "reference": "수 6장"
+    "hint": "",
+    "reference": "엡 3:20"
   },
   {
     "type": "short",
     "kind": "bible",
-    "category": "인물",
-    "difficulty": 2,
-    "text": "사자 굴에 던져졌지만 하나님이 사자의 입을 막아 살아난 사람은?",
-    "answer": "다니엘",
+    "category": "말씀",
+    "difficulty": 3,
+    "text": "\"영원부터 만물을 창조하신 하나님 속에 감추어졌던 비밀의 ( )이 어떠한 것을 드러내게 하려 하심이라\" 빈칸은?",
+    "answer": "경륜",
     "alternates": [],
     "hint": "",
-    "reference": "단 6장"
+    "reference": "엡 3:9"
   },
   {
-    "type": "minigame",
-    "game": "count"
+    "type": "short",
+    "kind": "bible",
+    "category": "말씀",
+    "difficulty": 3,
+    "text": "\"우리의 씨름은 혈과 육을 상대하는 것이 아니요 … 하늘에 있는 ( )들을 상대함이라\" 빈칸에 들어갈 말은?",
+    "answer": "악의 영",
+    "alternates": [
+      "악의영",
+      "악한 영"
+    ],
+    "hint": "",
+    "reference": "엡 6:12"
   },
   {
-    "type": "choice",
+    "type": "short",
+    "kind": "bible",
+    "category": "말씀",
+    "difficulty": 1,
+    "text": "\"분을 내어도 죄를 짓지 말며 ( )가 지도록 분을 품지 말라\" 빈칸에 들어갈 한 글자는?",
+    "answer": "해",
+    "alternates": [
+      "해가"
+    ],
+    "hint": "하늘에 떠 있어요",
+    "reference": "엡 4:26"
+  },
+  {
+    "type": "short",
     "kind": "bible",
     "category": "말씀",
     "difficulty": 2,
-    "text": "'내가 곧 길이요 진리요 ___이니' 빈칸에 들어갈 말은?",
+    "text": "\"술 취하지 말라 이는 방탕한 것이니 오직 ( )으로 충만함을 받으라\" 빈칸은?",
+    "answer": "성령",
+    "alternates": [
+      "성령님"
+    ],
+    "hint": "",
+    "reference": "엡 5:18"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "전신갑주",
+    "difficulty": 1,
+    "text": "\"마귀의 간계를 능히 대적하기 위하여 하나님의 ( )를 입으라\" 빈칸에 들어갈 말은?",
     "options": [
-      "사랑",
-      "생명",
-      "빛",
-      "소망"
+      "전신갑주",
+      "의의 옷",
+      "구원의 갑옷",
+      "진리의 띠"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 6:11"
+  },
+  {
+    "type": "minigame",
+    "game": "order"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "전신갑주",
+    "difficulty": 1,
+    "text": "다음 중 에베소서가 말하는 전신갑주에 해당하지 않는 것은?",
+    "options": [
+      "믿음의 화살",
+      "구원의 투구",
+      "의의 호심경",
+      "평안의 신"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 6:14~17 (믿음은 방패)"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "전신갑주",
+    "difficulty": 2,
+    "text": "에베소서 6장의 영적 무장에 속하지 않는 것은?",
+    "options": [
+      "흉배",
+      "방패",
+      "투구",
+      "화살"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 6:14~17"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "전신갑주",
+    "difficulty": 2,
+    "text": "전신갑주 연결 중 잘못된 것은?",
+    "options": [
+      "진리로 허리띠를",
+      "평안의 복음으로 장갑을",
+      "믿음으로 방패를",
+      "성령의 검인 하나님의 말씀을"
     ],
     "answerIndex": 1,
-    "reference": "요 14:6"
+    "reference": "엡 6:15 — 신발이 맞음"
   },
   {
     "type": "short",
     "kind": "bible",
-    "category": "숫자",
-    "difficulty": 3,
-    "text": "노아의 홍수 때 비가 밤낮으로 며칠 동안 내렸나요?",
-    "answer": "40일",
+    "category": "전신갑주",
+    "difficulty": 1,
+    "text": "성령의 검은 무엇이라고 했나요? (네 글자)",
+    "answer": "말씀",
     "alternates": [
-      "40",
-      "사십일",
-      "사십 일",
-      "40일간"
+      "하나님의 말씀"
+    ],
+    "hint": "입에서 나오는 것",
+    "reference": "엡 6:17"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "전신갑주",
+    "difficulty": 2,
+    "text": "하나님의 전신갑주가 나오는 것은 에베소서 몇 장인가요? (숫자만)",
+    "answer": "6",
+    "alternates": [
+      "6장",
+      "육장"
     ],
     "hint": "",
-    "reference": "창 7:12"
+    "reference": "엡 6:10~17"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 1,
+    "text": "에베소서에서 그리스도를 무엇으로 비유하나요?",
+    "options": [
+      "교회의 종",
+      "교회의 머리",
+      "교회의 문",
+      "교회의 터"
+    ],
+    "answerIndex": 1,
+    "reference": "엡 1:22~23"
   },
   {
     "type": "minigame",
@@ -565,119 +361,394 @@
   {
     "type": "choice",
     "kind": "bible",
-    "category": "인물",
+    "category": "교회",
     "difficulty": 2,
-    "text": "예수님을 은 삼십에 판 제자는?",
+    "text": "에베소서 4장 11절에 언급된 교회의 직분이 아닌 것은?",
     "options": [
-      "베드로",
-      "도마",
-      "가룟 유다",
-      "안드레"
+      "사도",
+      "선지자",
+      "교사",
+      "장로"
     ],
-    "answerIndex": 2,
-    "reference": "마 26:15"
-  },
-  {
-    "type": "short",
-    "kind": "bible",
-    "category": "장소",
-    "difficulty": 3,
-    "text": "바울(사울)이 예수님을 만나 회심한 것은 어느 도시로 가던 길이었나요?",
-    "answer": "다메섹",
-    "alternates": [
-      "다마스쿠스",
-      "다마스커스",
-      "다메섹 도상"
-    ],
-    "hint": "",
-    "reference": "행 9장"
+    "answerIndex": 3,
+    "reference": "엡 4:11"
   },
   {
     "type": "choice",
     "kind": "bible",
-    "category": "성경책",
-    "difficulty": 1,
-    "text": "성경 66권 중 첫 번째 책은?",
+    "category": "교회",
+    "difficulty": 2,
+    "text": "에베소서 4장에 나오는 교회의 직분이 아닌 것은?",
     "options": [
-      "출애굽기",
-      "창세기",
-      "마태복음",
-      "시편"
+      "사도",
+      "선지자",
+      "교사",
+      "집사"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 4:11"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 2,
+    "text": "에베소서 2장 20절에서 성도들은 누구의 터 위에 세우심을 입었다고 했나요?",
+    "options": [
+      "예수 그리스도",
+      "사도들",
+      "선지자들",
+      "사도들과 선지자들"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 2:20"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 2,
+    "text": "에베소서에서 그리스도를 표현한 것은?",
+    "options": [
+      "반석",
+      "모퉁잇돌",
+      "산 돌",
+      "손대지 아니한 돌"
     ],
     "answerIndex": 1,
-    "reference": ""
+    "reference": "엡 2:20"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 3,
+    "text": "에베소서 2장 19~20절에서 성도를 표현한 것이 **아닌** 것은?",
+    "options": [
+      "성도들과 동일한 시민",
+      "하나님의 권속",
+      "터 위에 세우심을 입은 자",
+      "나그네"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 2:19~20"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 3,
+    "text": "에베소서 1장 13절과 관계가 **없는** 것은?",
+    "options": [
+      "사랑의 역사",
+      "진리의 말씀",
+      "구원의 복음",
+      "약속의 성령"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 1:13"
+  },
+  {
+    "type": "minigame",
+    "game": "speed"
   },
   {
     "type": "short",
     "kind": "bible",
-    "category": "사건",
-    "difficulty": 2,
-    "text": "가나 혼인 잔치에서 예수님은 물을 무엇으로 바꾸셨나요?",
-    "answer": "포도주",
+    "category": "교회",
+    "difficulty": 1,
+    "text": "\"목사\"라는 말이 나오는 에베소서의 장은? (숫자만)",
+    "answer": "4",
     "alternates": [
-      "와인",
-      "포도즙"
+      "4장",
+      "사장"
+    ],
+    "hint": "직분이 나열된 장",
+    "reference": "엡 4:11"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "교회",
+    "difficulty": 2,
+    "text": "에베소서가 가장 강조하는 것은 교회의 무엇인가요? (세 글자)",
+    "answer": "통일성",
+    "alternates": [
+      "연합",
+      "하나됨",
+      "일치"
+    ],
+    "hint": "하나 되는 것",
+    "reference": "엡 4장"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 1,
+    "text": "\"하나님의 성령을 근심하게 하지 말라\"는 말씀은 에베소서 몇 장에 있나요?",
+    "options": [
+      "2장",
+      "3장",
+      "4장",
+      "5장"
+    ],
+    "answerIndex": 2,
+    "reference": "엡 4:30"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "\"주도 한 분이시오 믿음도 하나요 세례도 하나요\"는 에베소서 몇 장인가요?",
+    "options": [
+      "2장",
+      "3장",
+      "4장",
+      "5장"
+    ],
+    "answerIndex": 2,
+    "reference": "엡 4:5~6"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "\"교회는 … 만물을 충만하게 하시는 이의 충만함이니라\"는 몇 장인가요?",
+    "options": [
+      "1장",
+      "2장",
+      "3장",
+      "4장"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 1:23"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "남편과 아내가 서로 사랑하고 복종할 것을 권면한 장은?",
+    "options": [
+      "1장",
+      "3장",
+      "4장",
+      "5장"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 5장"
+  },
+  {
+    "type": "minigame",
+    "game": "jericho"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "\"분을 내어도 죄를 짓지 말며…\"는 에베소서 몇 장인가요?",
+    "options": [
+      "1장",
+      "2장",
+      "3장",
+      "4장"
+    ],
+    "answerIndex": 3,
+    "reference": "엡 4:26"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 1,
+    "text": "에베소서는 모두 몇 장인가요? (숫자만)",
+    "answer": "6",
+    "alternates": [
+      "6장",
+      "여섯"
     ],
     "hint": "",
-    "reference": "요 2장"
+    "reference": "에베소서"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "\"그리스도의 사랑의 너비와 길이와 높이와 깊이\"가 나오는 장은? (숫자만)",
+    "answer": "3",
+    "alternates": [
+      "3장"
+    ],
+    "hint": "",
+    "reference": "엡 3:18~19"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "장·절",
+    "difficulty": 2,
+    "text": "한 몸·한 성령·한 소망·한 믿음·한 세례·한 하나님으로 일치를 촉구한 장은? (숫자만)",
+    "answer": "4",
+    "alternates": [
+      "4장"
+    ],
+    "hint": "",
+    "reference": "엡 4:4~6"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "가정",
+    "difficulty": 1,
+    "text": "에베소서 5장에서 바울은 누구를 본받으라고 권면하나요?",
+    "options": [
+      "하나님",
+      "바울",
+      "베드로",
+      "마게도냐 교회"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 5:1"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "가정",
+    "difficulty": 2,
+    "text": "아내와 남편, 자녀와 부모, 종과 상전에 관한 권면이 함께 나오는 서신은?",
+    "options": [
+      "에베소서와 골로새서",
+      "갈라디아서와 에베소서",
+      "빌립보서와 에베소서",
+      "로마서와 에베소서"
+    ],
+    "answerIndex": 0,
+    "reference": "엡 5:22~6:9, 골 3:18~4:1"
   },
   {
     "type": "minigame",
     "game": "scramble"
   },
   {
-    "type": "choice",
+    "type": "short",
     "kind": "bible",
-    "category": "인물",
-    "difficulty": 3,
-    "text": "쌍둥이 형제 에서와 야곱의 아버지는 누구일까요?",
-    "options": [
-      "아브라함",
-      "이삭",
-      "요셉",
-      "라반"
+    "category": "가정",
+    "difficulty": 2,
+    "text": "에베소서의 가훈표(가정 권면)는 5장 21절부터 몇 장까지 이어지나요? (숫자만)",
+    "answer": "6",
+    "alternates": [
+      "6장"
     ],
-    "answerIndex": 1,
-    "reference": "창 25장"
+    "hint": "",
+    "reference": "엡 5:21~6:9"
   },
   {
-    "type": "short",
-    "kind": "nonsense",
-    "category": "넌센스",
+    "type": "choice",
+    "kind": "bible",
+    "category": "배경",
     "difficulty": 1,
-    "text": "성경에서 머리카락을 자르면 힘이 빠졌던, 제일 힘센 사람은?",
-    "answer": "삼손",
-    "alternates": [],
-    "hint": "사사기에 나와요",
+    "text": "에베소 도시는 지금 어느 나라 영토에 속해 있나요?",
+    "options": [
+      "터키",
+      "그리스",
+      "이탈리아",
+      "시리아"
+    ],
+    "answerIndex": 0,
     "reference": ""
   },
   {
     "type": "choice",
     "kind": "bible",
-    "category": "숫자",
+    "category": "배경",
     "difficulty": 2,
-    "text": "예수님이 오병이어로 먹이신 사람은 남자만 약 몇 명이었나요?",
+    "text": "에베소서를 골로새서와 함께 전달한 사람은?",
     "options": [
-      "500명",
-      "1,000명",
-      "5,000명",
-      "10,000명"
+      "디도",
+      "두기고",
+      "오네시모",
+      "에바브라"
+    ],
+    "answerIndex": 1,
+    "reference": "엡 6:21"
+  },
+  {
+    "type": "choice",
+    "kind": "bible",
+    "category": "배경",
+    "difficulty": 3,
+    "text": "요한계시록에서 \"처음 사랑을 버렸다\"고 책망받은 교회는?",
+    "options": [
+      "서머나 교회",
+      "버가모 교회",
+      "에베소 교회",
+      "라오디게아 교회"
     ],
     "answerIndex": 2,
-    "reference": "마 14:21"
+    "reference": "계 2:4"
   },
   {
     "type": "short",
     "kind": "bible",
-    "category": "말씀",
-    "difficulty": 2,
-    "text": "주기도문의 첫 구절 '하늘에 계신 우리 ___여' 빈칸은?",
-    "answer": "아버지",
+    "category": "배경",
+    "difficulty": 3,
+    "text": "바울의 친서 7개를 주장하는 학자들의 입장에서, 친서에 속하지 않는다고 보는 이 책의 이름은?",
+    "answer": "에베소서",
     "alternates": [
-      "아버지여",
-      "하나님 아버지"
+      "엡"
     ],
     "hint": "",
-    "reference": "마 6:9"
+    "reference": "학설"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "넌센스",
+    "difficulty": 1,
+    "text": "에베소서에서 성도들이 입어야 할 옷은 비싼 명품이 아니라 '전신( )'! 빈칸 두 글자는?",
+    "answer": "갑주",
+    "alternates": [
+      "갑옷"
+    ],
+    "hint": "",
+    "reference": "엡 6:11"
+  },
+  {
+    "type": "minigame",
+    "game": "count"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "넌센스",
+    "difficulty": 1,
+    "text": "에베소서에서 제일 자주 나오는 숫자는? 몸도 하나, 주도 하나, 믿음도 하나… 정답은? (숫자만)",
+    "answer": "1",
+    "alternates": [
+      "하나",
+      "일"
+    ],
+    "hint": "",
+    "reference": "엡 4:4~6"
+  },
+  {
+    "type": "short",
+    "kind": "bible",
+    "category": "넌센스",
+    "difficulty": 1,
+    "text": "사탄이 제일 무서워하는 에베소서 6장의 무기는? 방패도 투구도 아닌, 유일한 공격 무기!",
+    "answer": "성령의 검",
+    "alternates": [
+      "검",
+      "말씀",
+      "성령의검"
+    ],
+    "hint": "",
+    "reference": "엡 6:17"
   }
 ]
