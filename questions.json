@@ -19,7 +19,7 @@
     "kind": "bible",
     "category": "말씀",
     "difficulty": 1,
-    "text": "\"교회는 그의 몸이니 만물 안에서 만물을 충만하게 하시는 이의 ( )이니라\"",
+    "text": "\"교회는 그의 몸이니 만물 안에서 만물을 ( )하게 하시는 이의 ( )함이니라\" 두 빈칸에 공통으로 들어갈 말은?",
     "options": [
       "완성",
       "충만",
@@ -191,9 +191,7 @@
     "difficulty": 2,
     "text": "\"우리 가운데서 역사하시는 능력대로 우리가 ( ) 생각하는 모든 것에 더 넘치도록 능히 하실 이에게\" 빈칸은?",
     "answer": "구하거나",
-    "alternates": [
-      "구하거나 "
-    ],
+    "alternates": [],
     "hint": "",
     "reference": "엡 3:20"
   },
@@ -707,7 +705,7 @@
   },
   {
     "type": "short",
-    "kind": "bible",
+    "kind": "nonsense",
     "category": "넌센스",
     "difficulty": 1,
     "text": "에베소서에서 성도들이 입어야 할 옷은 비싼 명품이 아니라 '전신( )'! 빈칸 두 글자는?",
@@ -724,7 +722,7 @@
   },
   {
     "type": "short",
-    "kind": "bible",
+    "kind": "nonsense",
     "category": "넌센스",
     "difficulty": 1,
     "text": "에베소서에서 제일 자주 나오는 숫자는? 몸도 하나, 주도 하나, 믿음도 하나… 정답은? (숫자만)",
@@ -738,7 +736,7 @@
   },
   {
     "type": "short",
-    "kind": "bible",
+    "kind": "nonsense",
     "category": "넌센스",
     "difficulty": 1,
     "text": "사탄이 제일 무서워하는 에베소서 6장의 무기는? 방패도 투구도 아닌, 유일한 공격 무기!",
