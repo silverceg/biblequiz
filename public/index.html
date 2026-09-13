@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#070C18" />
 <title>성경퀴즈</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
@@ -15,8 +15,8 @@
   --display:'BMJUA','Pretendard',system-ui,sans-serif;
   --ui:'Pretendard',-apple-system,system-ui,sans-serif;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overscroll-behavior:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:radial-gradient(680px 420px at 50% -8%, rgba(255,194,75,.15), transparent 62%), var(--bg);
   color:var(--paper);font-family:var(--ui);display:flex;flex-direction:column;
   padding:env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 14px);transition:background .45s}
@@ -24,7 +24,7 @@ body[data-kind="nonsense"]{--accent:var(--coral);
   background:radial-gradient(680px 420px at 50% -8%, rgba(255,107,107,.22), transparent 62%), var(--bg)}
 body[data-kind="mini"]{--accent:var(--violet);
   background:radial-gradient(680px 420px at 50% -8%, rgba(155,140,255,.24), transparent 62%), var(--bg)}
-button{font-family:var(--display);border:none;color:inherit;cursor:pointer}
+button{font-family:var(--display);border:none;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 button:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
 
 .hud{display:flex;align-items:center;gap:10px;padding:12px 2px 4px;flex-shrink:0}
@@ -37,7 +37,7 @@ button:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
 .wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:10px 0;min-height:0}
 h1{font-family:var(--display);font-size:27px;font-weight:400;line-height:1.35;word-break:keep-all}
 p.sub{color:var(--dim);font-size:13px;line-height:1.6;text-align:center}
-input{width:100%;padding:16px;font-size:18px;font-family:var(--ui);background:var(--card);color:var(--paper);
+input{width:100%;padding:16px;font-size:18px;touch-action:manipulation;font-family:var(--ui);background:var(--card);color:var(--paper);
       border:1px solid var(--line);border-radius:14px}
 input:focus{outline:none;border-color:var(--accent)}
 input::placeholder{color:#5E7794}
@@ -281,6 +281,28 @@ input:focus{box-shadow:0 0 0 4px rgba(255,194,75,.15)}
        box-shadow:0 12px 40px rgba(0,0,0,.4);transition:opacity .15s,transform .15s}
 .mgpen.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 
+/* 안내 토스트 */
+.toast{position:fixed;left:12px;right:12px;bottom:14px;z-index:12;pointer-events:none;
+       background:var(--blue);color:#06101F;font-size:15px;line-height:1.5;padding:14px 16px;border-radius:16px;
+       box-shadow:0 14px 40px rgba(0,0,0,.45);opacity:0;transform:translateY(20px);transition:opacity .25s,transform .25s}
+.toast.on{opacity:1;transform:none}
+.toast b{font-family:var(--display);font-size:19px}
+
+/* 중간 입장 안내 카드 */
+.latecard{background:rgba(85,168,255,.12);border:1px solid var(--blue);border-radius:16px;padding:14px 16px;text-align:left;
+          font-size:14px;line-height:1.55;color:var(--paper)}
+.latecard b{font-family:var(--display);color:var(--blue);font-weight:400;font-size:16px}
+
+/* 미니게임 규칙 */
+.rules{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:16px;padding:15px 17px;text-align:left}
+.rdesc{font-family:var(--display);font-size:17px;color:var(--paper);margin-bottom:11px;line-height:1.45}
+.rlist{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:9px}
+.rlist li{counter-increment:r;position:relative;padding-left:32px;font-size:15px;line-height:1.5;color:var(--paper);animation:fxIn .4s both}
+.rlist li::before{content:counter(r);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;
+                  background:var(--violet);color:#0A0F1C;font-family:var(--display);font-size:13px;display:grid;place-items:center}
+.rlist li b{color:var(--accent);font-weight:400}
+.rtip{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);color:var(--dim);font-size:13px;line-height:1.5}
+
 /* 여리고 성 */
 .wall{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:10px;border-radius:16px;background:rgba(255,255,255,.04);
       border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none;perspective:600px}
@@ -326,7 +348,7 @@ input:focus{box-shadow:0 0 0 4px rgba(255,194,75,.15)}
   .pbar i::after,.mg-top .tm.warn,.q .t.hot,.breathe,.card.ok,.card.no,.ob.win,
   .mc.got,.oi.done,.sb.hit,.sb.miss{animation:none}
   .fx-in,.q.fx-in,.ob.fx-in,.card.fx-in,.rr.fx-in,.mc.fx-in,.oi.fx-in,.gain,
-  .intro,.intro .icat,.intro .istars span,.intro .ipts,.intro .ino{animation:none;opacity:1;transform:none;filter:none}
+  .intro,.intro .icat,.intro .istars span,.intro .ipts,.intro .ino,.rules,.rlist li{animation:none;opacity:1;transform:none;filter:none}
   .mc{transition:background .2s,border-color .2s}
   .mc.up,.mc.got{transform:none}
   .mc .f{transform:none}
@@ -357,6 +379,21 @@ const $ = (id) => document.getElementById(id);
 const esc = (t) => String(t).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const buzz = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
 const REDUCED = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+/* ── 아이폰 화면 확대 대응 ──
+   확대 자체는 CSS 의 touch-action:manipulation 으로 막는다 (연타를 더블탭으로 오해하지 않음).
+   그래도 확대된 채 남아 있으면, 화면이 넘어갈 때 한 번 원래 크기로 되돌린다.
+   연타가 곧 게임이므로 터치 이벤트 자체는 절대 가로막지 않는다. */
+function resetZoom(){
+  const vv = window.visualViewport;
+  if (!vv || vv.scale <= 1.02) return;                 // 확대돼 있지 않으면 아무것도 안 함
+  const mv = document.querySelector('meta[name="viewport"]');
+  if (!mv) return;
+  const normal = "width=device-width, initial-scale=1, viewport-fit=cover";
+  mv.setAttribute("content", normal + ", maximum-scale=1, user-scalable=no");
+  setTimeout(() => mv.setAttribute("content", normal), 350);   // 다시 핀치가 되도록 풀어 준다
+}
+document.addEventListener("dblclick", (e) => e.preventDefault());
 function flash(c){ const f = $("flash"); f.style.background = c; f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); }
 function replay(el, cls){ if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 function ring(color){
@@ -398,7 +435,21 @@ function rng(seed){ let a = seed >>> 0; return () => { a += 0x6D2B79F5; let t = 
 function shuffle(arr, rand){ const a = arr.slice(); for (let i = a.length-1; i > 0; i--) { const j = Math.floor(rand()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
 
 socket.on("connect", () => { $("foot").textContent = ""; me ? socket.emit("player:join", me) : renderJoin(); });
-socket.on("joined", (p) => { me = p; localStorage.setItem(KEY, JSON.stringify(p)); });
+socket.on("joined", (p) => {
+  me = { id: p.id, name: p.name };
+  localStorage.setItem(KEY, JSON.stringify(me));
+  if (p.catchUp > 0) toast(`중간 입장! 친구들 중간 점수인 <b>${p.catchUp}점</b>을 받고 시작합니다.<br />지금부터 맞히면 그대로 올라가요.`, 7000);
+  else if (p.restored) toast(`다시 연결됐어요. 점수 <b>${p.score}점</b> 그대로입니다.`, 5000);
+});
+
+/* 화면 위에 잠깐 뜨는 안내 */
+function toast(html, ms = 4000){
+  let t = $("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
+  t.innerHTML = html; t.classList.add("on");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("on"), ms);
+}
 socket.on("joinError", (m) => renderJoin(m));
 socket.on("kicked", () => { localStorage.removeItem(KEY); me = null; renderJoin("퇴장 처리되었습니다."); });
 socket.on("state", (s) => { S = s; render(s); });
@@ -443,6 +494,7 @@ function render(s){
     if (s.phase === "finished") confetti(90);
     if (s.phase !== "lobby") { lobbyBuilt = false; stopJump(); }
     if (s.phase !== "minigame") stopMotion();
+    resetZoom();
     lastPhase = s.phase;
   }
 
@@ -661,7 +713,7 @@ function startJump(){
 function viewAnswer(s){
   const q = s.question;
   if (q.type === "choice") {
-    wrap.innerHTML = qBlock(s) + `<div class="opts">${q.options.map((o,i) =>
+    wrap.innerHTML = qBlock(s) + lateNote(s) + `<div class="opts">${q.options.map((o,i) =>
       `<button class="ob b${i} fx-in" style="animation-delay:${140 + i * 85}ms" data-i="${i}"><span class="s">${SYM[i]}</span><span class="l">${esc(o)}</span></button>`).join("")}
       </div><p class="sub fx-in" style="animation-delay:.5s">한 번 고르면 바꿀 수 없어요. 신중하게!</p>`;
     wrap.querySelectorAll(".ob").forEach(b => b.onclick = () => {
@@ -671,7 +723,7 @@ function viewAnswer(s){
     });
     return;
   }
-  wrap.innerHTML = qBlock(s) + `<input class="fx-in" style="animation-delay:.14s" id="ans" maxlength="60" placeholder="답을 적어 주세요" autocomplete="off" enterkeyhint="send" />
+  wrap.innerHTML = qBlock(s) + lateNote(s) + `<input class="fx-in" style="animation-delay:.14s" id="ans" maxlength="60" placeholder="답을 적어 주세요" autocomplete="off" enterkeyhint="send" />
     <button class="big fx-in" style="animation-delay:.24s" id="sub">제출하기</button>
     <p class="sub fx-in" style="animation-delay:.34s">한 문제에 한 번만 제출할 수 있어요.</p>`;
   const ans = $("ans");
@@ -680,6 +732,16 @@ function viewAnswer(s){
   $("sub").onclick = send;
   ans.addEventListener("keydown", (e) => e.key === "Enter" && send());
   ans.focus();
+}
+
+/* 이미 진행 중인 문제/게임에 늦게 들어온 경우 안내 */
+function lateNote(s){
+  if (!s.me || !s.me.late) return "";
+  if (s.phase === "question" && !s.myAnswer) return '<div class="latecard">중간에 들어왔지만 <b>이 문제부터 바로 참여</b>할 수 있어요!</div>';
+  if (s.phase === "question") return "";
+  if (s.phase === "grading" && !s.myAnswer) return '<div class="latecard">이 문제는 이미 마감됐어요. <b>다음 문제부터 함께</b> 풀어요!</div>';
+  if (s.phase === "minigame" && !s.mini?.myDone) return '<div class="latecard">게임이 이미 시작됐어요. <b>남은 시간 안에</b> 최대한 해 보세요!</div>';
+  return "";
 }
 
 function viewWaiting(s){
@@ -700,7 +762,7 @@ function viewResult(s){
     const c = i === s.correctIndex ? "win" : (a && a.choice === i ? "picked" : "dim");
     return `<button class="ob b${i} ${c}" style="animation-delay:${200 + i * 80}ms" disabled><span class="s">${SYM[i]}</span><span class="l">${esc(o)}</span></button>`;
   }).join("")}</div>`;
-  wrap.innerHTML = `<div class="card ${cls} ${cls ? "" : "fx-in"}"><div class="big-t">${head}</div>
+  wrap.innerHTML = lateNote(s) + `<div class="card ${cls} ${cls ? "" : "fx-in"}"><div class="big-t">${head}</div>
       ${a && a.correct ? `<div class="gain">+${s.me.lastGain}점</div>` : ""}
       <div class="sm">정답 · <b id="ca"></b></div></div>
     ${opt}
@@ -736,14 +798,20 @@ function viewIntro(s){
   const mini = q.type === "minigame";
   const stars = mini ? "" : Array.from({length:3}, (_, i) =>
     `<span class="${i < q.difficulty ? "" : "off"}" style="animation-delay:${.45 + i * .15}s">★</span>`).join("");
-  wrap.innerHTML = `<p class="sub fx-in" style="letter-spacing:3px">다음 문제</p>
+  const how = (q.how || []).map((line, i) => `<li style="animation-delay:${.45 + i * .12}s">${line}</li>`).join("");
+  wrap.innerHTML = `<p class="sub fx-in" style="letter-spacing:3px">${mini ? "다음 게임" : "다음 문제"}</p>
     <div class="intro ${mini ? "mini" : ""}">
       <div class="icat">${esc(mini ? q.name : q.category)}</div>
       ${stars ? `<div class="istars">${stars}</div>` : ""}
-      <div class="ipts">${mini ? "미니게임 · 완주 순서대로 점수" : `<b>${q.points}</b>점 · ${DIFF_NAME[q.difficulty] || ""}`}</div>
-      <div class="ino">${q.no}번${mini ? "" : ` · ${q.type === "choice" ? "객관식" : "주관식"}`}${q.kind === "nonsense" ? " · 넌센스 타임" : ""}</div>
+      <div class="ipts">${mini ? "완주 순서대로 점수" : `<b>${q.points}</b>점 · ${DIFF_NAME[q.difficulty] || ""}`}</div>
+      <div class="ino">${q.no}번${mini ? ` · 제한 ${q.limit}초` : ` · ${q.type === "choice" ? "객관식" : "주관식"}`}${q.kind === "nonsense" ? " · 넌센스 타임" : ""}</div>
     </div>
-    <p class="sub fx-in" style="animation-delay:.9s">${mini ? "손가락을 풀어 두세요!" : "잠시 뒤 문제가 열립니다. 준비!"}</p>`;
+    ${how ? `<div class="rules fx-in" style="animation-delay:.35s">
+      <div class="rdesc">${esc(q.desc || "")}</div>
+      <ol class="rlist">${how}</ol>
+      ${q.tip ? `<div class="rtip">${esc(q.tip)}</div>` : ""}
+    </div>` : ""}
+    <p class="sub fx-in" style="animation-delay:.9s">${mini ? "규칙을 읽고 손가락을 풀어 두세요!" : "선생님이 열면 바로 시작됩니다. 준비!"}</p>`;
 }
 
 function viewBoard(s){
@@ -765,17 +833,18 @@ function viewBoard(s){
 /* ══════════ 미니게임 ══════════ */
 const PAIRS = ["전신갑주","모퉁잇돌","화평","충만","경륜","한 몸","빛의 열매","성령의 검"];
 const ORDER_SETS = [
-  { t: "전신갑주를 입는 순서 (엡 6:14~17)", items: ["진리의 허리띠","의의 호심경","평안의 복음의 신","믿음의 방패","구원의 투구","성령의 검"] },
-  { t: "에베소서의 흐름", items: ["1장 · 신령한 복","2장 · 은혜로 구원","3장 · 비밀의 경륜","4장 · 하나 됨","5장 · 빛의 자녀","6장 · 전신갑주"] },
-  { t: "\"하나\"의 고백 순서 (엡 4:4~6)", items: ["몸이 하나","성령도 한 분","소망도 하나","주도 한 분","믿음도 하나","세례도 하나"] },
-  { t: "바울의 옥중서신 순서", items: ["에베소서","빌립보서","골로새서","빌레몬서"] },
+  { t: "구약의 흐름", items: ["천지창조","노아의 홍수","아브라함의 언약","출애굽","다윗 왕","바벨론 포로"] },
+  { t: "예수님의 생애", items: ["베들레헴 탄생","요단강 세례","오병이어","십자가","부활","오순절 성령강림"] },
+  { t: "성경 순서", items: ["창세기","출애굽기","사무엘상","이사야","마태복음","요한계시록"] },
 ];
-const REAL = ["전신갑주","모퉁잇돌","화평","충만","경륜","구원의 투구","진리의 허리띠","믿음의 방패",
-  "의의 호심경","성령의 검","빛의 열매","신령한 복","하나님의 권속","평안의 복음","사도","선지자","목사","교사",
-  "복음 전하는 자","그리스도의 몸","교회의 머리","허물과 죄","은혜","믿음","사랑","소망","한 세례","성령의 인침"];
-const FAKE = ["믿음의 화살","평안의 장갑","은혜의 사다리","구원의 창","소망의 갑옷","사랑의 투석기","의의 신발끈",
-  "진리의 망토","성령의 나팔","교회의 기둥","장로","집사","감독","제사장","레위인","선교사","권사","전도사",
-  "지혜의 관","영광의 지팡이"];
+const REAL = ["창세기","출애굽기","레위기","민수기","신명기","여호수아","사사기","룻기","사무엘상","열왕기하",
+  "역대상","에스라","느헤미야","에스더","욥기","시편","잠언","전도서","아가","이사야","예레미야","에스겔","다니엘",
+  "호세아","요엘","아모스","오바댜","요나","미가","나훔","하박국","스바냐","학개","스가랴","말라기",
+  "마태복음","마가복음","누가복음","요한복음","사도행전","로마서","고린도전서","갈라디아서","에베소서","빌립보서",
+  "골로새서","데살로니가전서","디모데후서","디도서","빌레몬서","히브리서","야고보서","베드로전서","요한일서","유다서","요한계시록"];
+const FAKE = ["모세서","다윗기","솔로몬복음","아브라함서","노아기","엘리야서","사울기","요셉복음","바울기","베드로복음",
+  "사무엘하서","여호수아복음","가나안서","예루살렘서","천사기","대예언서","소선지서","성령행전","십계명기","광야기",
+  "마리아복음","니고데모서","삼손기","기드온복음","에덴서"];
 
 function viewMini(s){
   const m = s.mini;
@@ -868,7 +937,7 @@ function gameJericho(m){
     lastHit = now; shakes++; $("jcnt").textContent = shakes + "번";
     damage(TAP_DMG); buzz(8);
   });
-  setTimeout(() => { if (!gotMotion && !done) $("jhint").textContent = "흔들기가 안 되면 성벽을 빠르게 두드리세요!"; }, 2500);
+  setTimeout(() => { if (!gotMotion && !done && $("jhint")) $("jhint").textContent = "흔들기가 안 되면 성벽을 빠르게 두드리세요!"; }, 2500);
   $("jcnt").textContent = "0번";
   $("mgsub").textContent = "먼저 다 무너뜨리는 사람이 1등";
   setProgress(0);
@@ -876,24 +945,26 @@ function gameJericho(m){
 
 /* 8) 숫자 맞추기 (+ / −) */
 const COUNT_Q = [
-  { q: "에베소서는 모두 몇 장?", a: 6, s: 25, r: "" },
-  { q: "하나님의 전신갑주는 모두 몇 가지? (엡 6:14~17)", a: 6, s: 20, r: "엡 6장" },
-  { q: "\"목사\"라는 말이 나오는 에베소서의 장은?", a: 4, s: 30, r: "엡 4:11" },
-  { q: "전신갑주가 나오는 에베소서의 장은?", a: 6, s: 35, r: "엡 6:10" },
-  { q: "에베소서 4장 11절에 나오는 직분은 모두 몇 가지?", a: 5, s: 40, r: "사도·선지자·복음전하는자·목사·교사" },
-  { q: "\"하나\"라고 고백한 것은 모두 몇 가지? (엡 4:4~6)", a: 7, s: 30, r: "몸·성령·소망·주·믿음·세례·하나님" },
-  { q: "\"그 은혜에 의하여 믿음으로 구원을 받았으니\"는 2장 몇 절?", a: 8, s: 40, r: "엡 2:8" },
-  { q: "\"교회는 그의 몸이니…\"는 에베소서 1장 몇 절?", a: 23, s: 55, r: "엡 1:23" },
-  { q: "\"그는 우리의 화평이신지라\"는 2장 몇 절?", a: 14, s: 45, r: "엡 2:14" },
-  { q: "\"해가 지도록 분을 품지 말고\"는 4장 몇 절?", a: 26, s: 55, r: "엡 4:26" },
-  { q: "\"술 취하지 말라\"는 5장 몇 절?", a: 18, s: 50, r: "엡 5:18" },
-  { q: "\"마귀의 간계를 대적하기 위하여\"는 6장 몇 절?", a: 11, s: 40, r: "엡 6:11" },
-  { q: "그리스도의 사랑의 너비·길이·높이·깊이는 모두 몇 가지?", a: 4, s: 25, r: "엡 3:18" },
-  { q: "에베소서는 신약 성경의 몇 번째 책?", a: 10, s: 40, r: "" },
-  { q: "바울의 옥중서신은 모두 몇 권?", a: 4, s: 30, r: "엡·빌·골·몬" },
-  { q: "요한계시록에서 에베소 교회는 일곱 교회 중 몇 번째?", a: 1, s: 30, r: "계 2:1" },
-  { q: "성령의 검은 전신갑주 중 몇 번째로 나오는가? (엡 6:14~17)", a: 6, s: 30, r: "" },
-  { q: "\"빛의 열매\"에 나오는 것은 착함·의로움·진실함, 모두 몇 가지?", a: 3, s: 28, r: "엡 5:9" },
+  { q: "아브라함이 이삭을 낳았을 때 나이는?", a: 100, s: 60, r: "창 21:5" },
+  { q: "예수님이 직접 세우신 제자는 몇 명?", a: 12, s: 40, r: "마 10:1" },
+  { q: "노아의 홍수 때 비가 내린 날 수는?", a: 40, s: 5, r: "창 7:12" },
+  { q: "이스라엘 백성이 광야에서 지낸 햇수는?", a: 40, s: 75, r: "민 14:33" },
+  { q: "예수님이 광야에서 금식하신 날 수는?", a: 40, s: 0, r: "마 4:2" },
+  { q: "오병이어에서 '오병'은 떡 몇 개?", a: 5, s: 30, r: "마 14:17" },
+  { q: "다윗이 왕이 되었을 때 나이는?", a: 30, s: 0, r: "삼하 5:4" },
+  { q: "요셉이 애굽의 총리가 되었을 때 나이는?", a: 30, s: 65, r: "창 41:46" },
+  { q: "여리고 성을 돈 날은 모두 며칠?", a: 7, s: 35, r: "수 6장" },
+  { q: "야곱의 아들은 모두 몇 명?", a: 12, s: 45, r: "창 35:22" },
+  { q: "신약 성경은 모두 몇 권?", a: 27, s: 60, r: "" },
+  { q: "구약 성경은 모두 몇 권?", a: 39, s: 5, r: "" },
+  { q: "성경은 모두 몇 권?", a: 66, s: 30, r: "" },
+  { q: "시편은 모두 몇 편?", a: 150, s: 110, r: "" },
+  { q: "요나가 물고기 뱃속에 있던 날 수는?", a: 3, s: 25, r: "욘 1:17" },
+  { q: "베드로가 예수님을 모른다고 한 횟수는?", a: 3, s: 20, r: "마 26:75" },
+  { q: "예수님이 성전에서 부모를 떠나 계셨을 때 나이는?", a: 12, s: 40, r: "눅 2:42" },
+  { q: "마태복음은 모두 몇 장?", a: 28, s: 0, r: "" },
+  { q: "예수님이 공생애를 시작하신 나이는 약 몇 세?", a: 30, s: 58, r: "눅 3:23" },
+  { q: "예수님이 부활하신 것은 죽으신 지 며칠 만에?", a: 3, s: 28, r: "" },
 ];
 function gameCount(m){
   const rand = rng(m.seed);
@@ -920,7 +991,7 @@ function gameCount(m){
         setTimeout(() => { lock = false; draw(); }, 600);
       } else {
         replay($("cval"), "wrong"); penalty(1500, "땡! 1.5초 멈춤");
-        setTimeout(() => $("cval").classList.remove("wrong"), 1500);
+        setTimeout(() => $("cval") && $("cval").classList.remove("wrong"), 1500);
       }
     };
   }
@@ -931,18 +1002,16 @@ function gameCount(m){
 
 /* 4) 말씀 빈칸 채우기 */
 const VERSES = [
-  { t: "너희는 그 은혜에 의하여 ___으로 말미암아 구원을 받았으니", a: "믿음", o: ["행위", "율법", "사랑"], r: "엡 2:8" },
-  { t: "교회는 그의 몸이니 만물을 충만하게 하시는 이의 ___이니라", a: "충만함", o: ["영광", "권세", "완성"], r: "엡 1:23" },
-  { t: "그는 우리의 ___이신지라 둘로 하나를 만드사 중간에 막힌 담을 허시고", a: "화평", o: ["구원", "소망", "기쁨"], r: "엡 2:14" },
-  { t: "빛의 열매는 모든 착함과 의로움과 ___에 있느니라", a: "진실함", o: ["사랑함", "실천함", "존귀함"], r: "엡 5:9" },
-  { t: "평안의 매는 줄로 ___이 하나 되게 하신 것을 힘써 지키라", a: "성령", o: ["교회", "믿음", "사랑"], r: "엡 4:3" },
-  { t: "마귀의 간계를 능히 대적하기 위하여 하나님의 ___를 입으라", a: "전신갑주", o: ["의의 옷", "구원의 갑옷", "진리의 띠"], r: "엡 6:11" },
-  { t: "분을 내어도 죄를 짓지 말며 ___가 지도록 분을 품지 말고", a: "해", o: ["밤", "달", "때"], r: "엡 4:26" },
-  { t: "술 취하지 말라 이는 방탕한 것이니 오직 ___으로 충만함을 받으라", a: "성령", o: ["기쁨", "감사", "말씀"], r: "엡 5:18" },
-  { t: "구원의 투구와 성령의 검 곧 하나님의 ___을 가지라", a: "말씀", o: ["능력", "사랑", "약속"], r: "엡 6:17" },
-  { t: "너희의 ___로 죽었던 너희를 살리셨도다", a: "허물과 죄", o: ["율법과 심판", "교만과 방종", "악독과 오만"], r: "엡 2:1" },
-  { t: "시와 찬송과 ___들로 서로 화답하며 마음으로 주께 노래하며", a: "신령한 노래", o: ["나팔과 장구", "기쁜 춤", "감사의 기도"], r: "엡 5:19" },
-  { t: "몸이 하나요 ___도 한 분이시니 부르심의 한 소망 안에서 부르심을 받았느니라", a: "성령", o: ["교회", "사도", "천사"], r: "엡 4:4" },
+  { t: "하나님이 세상을 이처럼 사랑하사 ___를 주셨으니", a: "독생자", o: ["천사", "선지자", "제사장"], r: "요 3:16" },
+  { t: "여호와는 나의 ___시니 내게 부족함이 없으리로다", a: "목자", o: ["왕", "빛", "반석"], r: "시 23:1" },
+  { t: "태초에 하나님이 ___를 창조하시니라", a: "천지", o: ["사람", "빛", "바다"], r: "창 1:1" },
+  { t: "내게 ___ 주시는 자 안에서 내가 모든 것을 할 수 있느니라", a: "능력", o: ["지혜", "믿음", "소망"], r: "빌 4:13" },
+  { t: "수고하고 무거운 짐 진 자들아 다 내게로 오라 내가 너희를 ___ 하리라", a: "쉬게", o: ["기쁘게", "강하게", "부하게"], r: "마 11:28" },
+  { t: "여호와를 경외하는 것이 ___의 근본이어늘", a: "지식", o: ["사랑", "기쁨", "축복"], r: "잠 1:7" },
+  { t: "주의 말씀은 내 발에 ___이요 내 길에 빛이니이다", a: "등", o: ["신", "길", "힘"], r: "시 119:105" },
+  { t: "네 ___을 다하고 목숨을 다하고 뜻을 다하여 주 너의 하나님을 사랑하라", a: "마음", o: ["시간", "재물", "지혜"], r: "마 22:37" },
+  { t: "내가 곧 길이요 ___요 생명이니", a: "진리", o: ["사랑", "빛", "평안"], r: "요 14:6" },
+  { t: "항상 기뻐하라 쉬지 말고 ___하라 범사에 감사하라", a: "기도", o: ["찬양", "노래", "일"], r: "살전 5:16-18" },
 ];
 function gameVerse(m){
   const rand = rng(m.seed);
@@ -1017,8 +1086,7 @@ function gameCatch(m){
 }
 
 /* 6) 이름 글자 맞추기 */
-const NAMES = ["전신갑주", "모퉁잇돌", "충만함", "경륜", "화평", "성령의 검", "믿음의 방패", "구원의 투구",
-  "진리의 허리띠", "빛의 열매", "하나님의 권속", "신령한 복", "두기고", "에베소"];
+const NAMES = ["아브라함", "느부갓네살", "므두셀라", "바돌로매", "여호수아", "나다나엘", "스룹바벨", "멜기세덱", "삭개오", "니고데모", "브리스길라", "히스기야"];
 function gameScramble(m){
   const rand = rng(m.seed);
   const set = shuffle(NAMES, rand).slice(0, 8);
@@ -1059,7 +1127,7 @@ function gameScramble(m){
 
 /* 틀렸을 때: 잠깐 잠그고(마구 누르기 방지) 호스트에 알린다 */
 function penalty(ms = 1300, msg = "땡! 잠깐 멈춤"){
-  if (!MG) return;
+  if (!MG || !$("mgbox")) return;
   MG.lock = true;
   socket.emit("mini:wrong");
   buzz(160);
@@ -1067,7 +1135,7 @@ function penalty(ms = 1300, msg = "땡! 잠깐 멈춤"){
   if (!pen) { pen = document.createElement("div"); pen.id = "mgpen"; pen.className = "mgpen"; $("mgbox").parentElement.appendChild(pen); }
   pen.textContent = msg; pen.classList.add("on");
   clearTimeout(MG.penT);
-  MG.penT = setTimeout(() => { MG.lock = false; pen.classList.remove("on"); }, ms);
+  MG.penT = setTimeout(() => { if (MG) MG.lock = false; pen.classList.remove("on"); }, ms);
 }
 const locked = () => !!(MG && MG.lock);
 
@@ -1124,8 +1192,9 @@ function gameMemory(m){
 /* 2) 성경 순서 맞추기 */
 function gameOrder(m){
   const rand = rng(m.seed);
-  const sets = shuffle(ORDER_SETS, rand);
-  let si = 0, step = 0;
+  const sets = shuffle(ORDER_SETS, rand).slice(0, 3);
+  const totalItems = sets.reduce((t, x) => t + x.items.length, 0);
+  let si = 0, step = 0, doneItems = 0;
   const box = $("mgbox");
   function draw(){
     const set = sets[si];
@@ -1141,10 +1210,10 @@ function gameOrder(m){
         if (locked()) return;
         if (b.classList.contains("done")) return;
         if (txt === set.items[step]) {
-          step++; b.classList.add("done");
+          step++; doneItems++; b.classList.add("done");
           b.querySelector(".num").textContent = step;
           buzz(20);
-          setProgress((si * 6 + step) / (sets.length * 6));
+          setProgress(doneItems / totalItems);
           if (step === set.items.length) {
             si++; step = 0;
             if (si >= sets.length) return finishMini();
@@ -1197,7 +1266,10 @@ function gameSpeed(m){
   const churn = setInterval(() => {
     if (!S || S.phase !== "minigame") return clearInterval(churn);
     const kids = [...grid.children];
-    if (!kids.some(k => k.dataset.real === "1")) fill(kids[Math.floor(rand() * kids.length)]);
+    if (!kids.some(k => k.dataset.real === "1")) {   // 여섯 칸이 다 가짜면 한 칸을 확실히 진짜로
+      const k = kids[Math.floor(rand() * kids.length)];
+      k.dataset.real = "1"; k.textContent = nextReal(); k.className = "sb";
+    }
   }, 900);
   $("mgsub").textContent = "진짜 성경책 이름만 누르세요";
   setProgress(0);
