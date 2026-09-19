@@ -125,6 +125,7 @@ const game = {
   namesOpen: [],        // 답 카드에서 이름을 펼쳐 둔 것
   showWrong: false,     // 미니게임 오답 보기
   showQR: false,        // 접속 QR 크게 보기
+  showBonus: false,     // 점수 주기 창
   lastDone: 0,          // 방금 푼 문제 번호 (선택판에서 사라지는 애니메이션용)
   introTimer: null,
   players: new Map(),
@@ -191,7 +192,9 @@ function miniView() {
     const r = game.mini.results.get(p.id);
     return { id: p.id, name: p.name, pct: r ? r.pct : 0, done: !!(r && r.doneAt), wrong: game.mini.wrongs.get(p.id) || 0 };
   });
+  const cq = currentQuestion();
   const finishers = game.mini.order.map((pid, i) => ({
+    pts: miniPoints(cq, i + 1, 1, miniN()),
     rank: i + 1,
     name: game.players.get(pid)?.name || "?",
     sec: Math.round(((game.mini.results.get(pid).doneAt - game.openedAt) / 1000) * 10) / 10,
@@ -213,11 +216,46 @@ function lobbyTop() {
     .map((p) => ({ name: p.name, best: p.lobbyBest }));
 }
 
+/* ── 미니게임 점수: 완주 여부가 아니라 '몇 번째로 끝냈나'로 갈린다 ──
+   호스트가 이 게임의 점수를 바꾸면 그 값이 1등 점수가 되고, 나머지는 비율대로 따라간다. */
+const PODIUM = [1, .8, .65];          // 1·2·3등은 늘 고정 비율
+const MINI_HI = .55, MINI_LO = .3;    // 4등 ~ 꼴찌 구간
+const MINI_UNFIN = .2;
+const round10 = (v) => Math.round(v / 10) * 10;
+
+function miniTop(q) {
+  if (q && game.points.has(q.no)) return game.points.get(q.no);
+  return clampPoints(game.basePoints * 3);            // 기본 100점이면 1등 300점
+}
+/* 참가 인원 — 게임이 시작될 때 인원을 고정해 두고 그 수에 맞춰 점수를 나눈다 */
+function miniN() {
+  if (game.mini && game.mini.n) return game.mini.n;
+  return Math.max(1, [...game.players.values()].filter((p) => p.connected).length);
+}
+function miniPoints(q, rank, pct, n) {                // rank: 1부터, 0이면 미완주
+  const top = miniTop(q);
+  if (!rank) return round10(top * MINI_UNFIN * (pct || 0));
+  if (rank <= 3) return round10(top * PODIUM[rank - 1]);
+  const last = Math.max(4, n || miniN());             // 꼴찌 등수
+  const f = last <= 4 ? 0 : Math.min(1, (rank - 4) / (last - 4));
+  return round10(top * (MINI_HI - (MINI_HI - MINI_LO) * f));
+}
+function miniTable(q) {                               // 화면에 보여 줄 점수표
+  const n = miniN();
+  return {
+    top: miniTop(q), n,
+    ranks: [1, 2, 3].map((r) => miniPoints(q, r, 0, n)),
+    hi: miniPoints(q, 4, 0, n),                        // 4등
+    lo: miniPoints(q, Math.max(4, n), 0, n),           // 꼴찌
+    unfin: miniPoints(q, 0, 1, n),
+  };
+}
+
 /* 중간에 들어온 친구가 받을 점수 — 참가자들의 중간값(median). 꼴찌가 되지도, 1등이 되지도 않게. */
 function catchUpScore() {
   if (!game.catchUp || game.phase === "lobby") return 0;
   const arr = [...game.players.values()]
-    .filter((p) => p.history.some((h) => !h.catchUp))     // 실제로 문제를 푼 사람만 기준으로
+    .filter((p) => p.history.some((h) => !h.catchUp && !h.bonus))   // 실제로 문제를 푼 사람만 기준으로
     .map((p) => p.score).sort((a, b) => a - b);
   if (!arr.length) return 0;
   const mid = arr.length % 2 ? arr[(arr.length - 1) / 2] : (arr[arr.length / 2 - 1] + arr[arr.length / 2]) / 2;
@@ -239,6 +277,7 @@ function introInfo() {
   return { no: q.no, type: q.type, kind: q.kind, category: q.category, difficulty: q.difficulty,
            points: q.type === "minigame" ? 0 : qPoints(q), name: q.name || null,
            desc: q.desc || null, tip: q.tip || null, how: q.how || null, limit: q.limit || 0,
+           table: q.type === "minigame" ? miniTable(q) : null,
            until: game.introUntil || 0 };
 }
 
@@ -255,6 +294,7 @@ function hostState() {
     namesOpen: game.namesOpen,
     showWrong: game.showWrong,
     showQR: game.showQR,
+    showBonus: game.showBonus,
     hostCount: hostCount(),
     list: questionList(),
     intro: introInfo(),
@@ -267,6 +307,7 @@ function hostState() {
     question: q && { ...q, points: qPoints(q) },
     groups: game.phase === "grading" ? answerGroups() : [],
     mini: (game.phase === "minigame" || game.phase === "minigame_result") ? miniView() : null,
+    miniTable: q && q.type === "minigame" ? miniTable(q) : null,
     submittedNames: game.phase === "question"
       ? [...game.answers.keys()].map((id) => game.players.get(id)?.name || "?") : [],
     submitted: game.answers.size,
@@ -300,6 +341,7 @@ function playerState(id) {
       openedAt: game.openedAt, doneCount: mv.doneCount,
       myDone: !!(myMini && myMini.doneAt),
       myRank: myMini && myMini.doneAt ? game.mini.order.indexOf(id) + 1 : 0,
+      table: miniTable(q),
       top: mv.finishers,
     },
     correctAnswer: game.phase === "grading" && q
@@ -460,13 +502,29 @@ io.on("connection", (socket) => {
   socket.on("host:leaderboard", () => { game.phase = "leaderboard"; pushAll(); });
   socket.on("host:speedBonus", (on) => { game.speedBonus = !!on; pushHost(); });
   socket.on("host:catchUp", (on) => { game.catchUp = !!on; pushHost(); });
+  socket.on("host:bonus", (msg) => {
+    const pts = Math.max(-1000, Math.min(1000, Math.round((Number(msg && msg.pts) || 0) / 10) * 10));
+    if (!pts) return;
+    const targets = (msg.id === "all")
+      ? [...game.players.values()]
+      : [game.players.get(msg.id)].filter(Boolean);
+    for (const p of targets) {
+      p.history = p.history || [];
+      p.history.push({ no: -1, pts, bonus: true });     // 문제 번호가 아니라서 채점 때 지워지지 않는다
+      p.score = Math.max(0, p.history.reduce((t, h) => t + h.pts, 0));
+      if (p.socketId) io.to(p.socketId).emit("bonus", { pts });
+    }
+    pushAll();
+  });
+  socket.on("host:showBonus", (on) => { game.showBonus = !!on; pushHost(); });
 
   // 지금 열려 있는 문제의 점수를 바꾼다 (채점 중에 바꾸면 즉시 다시 계산)
   socket.on("host:points", (v) => {
     const q = currentQuestion();
-    if (!q || q.type === "minigame") return;
+    if (!q) return;
     game.points.set(q.no, clampPoints(v));
     if (game.phase === "grading") applyScores();
+    if (game.phase === "minigame_result") finishMini2();
     pushAll();
   });
 
@@ -489,7 +547,7 @@ io.on("connection", (socket) => {
     game.questions = loadQuestions();
     game.phase = "lobby"; game.index = -1; game.answers.clear(); game.mini = null;
     game.points.clear(); game.done.clear(); game.lastDone = 0; game.openCat = null;
-    game.namesOpen = []; game.showWrong = false; game.showQR = false;
+    game.namesOpen = []; game.showWrong = false; game.showQR = false; game.showBonus = false;
     for (const p of game.players.values()) {
       p.score = 0; p.history = []; p.streak = 0; p.lastGain = 0; p.lobbyBest = 0;
       p.late = false; p.catchUp = 0;
@@ -623,7 +681,8 @@ function openStage() {
   if (game.mini?.timer) clearTimeout(game.mini.timer);
   game.openedAt = Date.now();
   if (q.type === "minigame") {
-    game.mini = { seed: Math.floor(Math.random() * 1e9), results: new Map(), order: [], timer: null, wrongs: new Map() };
+    game.mini = { seed: Math.floor(Math.random() * 1e9), results: new Map(), order: [], timer: null, wrongs: new Map(),
+                  n: Math.max(1, [...game.players.values()].filter((p) => p.connected).length) };
     game.phase = "minigame";
     game.mini.timer = setTimeout(() => { if (game.phase === "minigame") finishMini(); }, q.limit * 1000 + 1200);
   } else {
@@ -633,6 +692,20 @@ function openStage() {
   pushAll();
 }
 
+function finishMini2() {          // 이미 끝난 미니게임의 점수를 다시 계산 (배점을 바꿨을 때)
+  const q = currentQuestion();
+  if (!q || !game.mini) return;
+  for (const p of game.players.values()) {
+    p.history = (p.history || []).filter((h) => h.no !== q.no);
+    const r = game.mini.results.get(p.id);
+    const rank = r && r.doneAt ? game.mini.order.indexOf(p.id) + 1 : 0;
+    const pts = r ? miniPoints(q, rank, r.pct) : 0;
+    if (pts > 0) p.history.push({ no: q.no, pts });
+    p.lastGain = pts;
+    p.score = Math.max(0, p.history.reduce((s, h) => s + h.pts, 0));
+  }
+}
+
 function finishMini() {
   if (game.phase !== "minigame") return;
   if (game.mini.timer) clearTimeout(game.mini.timer);
@@ -640,12 +713,11 @@ function finishMini() {
   for (const p of game.players.values()) {
     p.history = (p.history || []).filter((h) => h.no !== q.no);
     const r = game.mini.results.get(p.id);
-    let pts = 0;
-    if (r && r.doneAt) pts = Math.max(100, 250 - game.mini.order.indexOf(p.id) * 10);
-    else if (r) pts = Math.round(r.pct * 80);
+    const rank = r && r.doneAt ? game.mini.order.indexOf(p.id) + 1 : 0;
+    const pts = r ? miniPoints(q, rank, r.pct) : 0;
     if (pts > 0) p.history.push({ no: q.no, pts });
     p.lastGain = pts;
-    p.score = p.history.reduce((s, h) => s + h.pts, 0);
+    p.score = Math.max(0, p.history.reduce((s, h) => s + h.pts, 0));
   }
   game.phase = "minigame_result";
   pushAll();
@@ -658,7 +730,7 @@ function applyScores() {
   for (const p of game.players.values()) {
     p.history = (p.history || []).filter((h) => h.no !== q.no);
     const a = game.answers.get(p.id);
-    const solved = p.history.filter((h) => !h.catchUp).length;
+    const solved = p.history.filter((h) => !h.catchUp && !h.bonus).length;
     if (p.late && solved >= 2) p.late = false;             // 두 문제쯤 참여하면 '중간입장' 표시를 뗀다
     if (a && a.correct) {
       let pts = qPoints(q);
@@ -666,10 +738,10 @@ function applyScores() {
       p.history.push({ no: q.no, pts });
       p.lastGain = pts;
     } else p.lastGain = 0;
-    const nos = new Set(p.history.filter((h) => !h.catchUp).map((h) => h.no));
+    const nos = new Set(p.history.filter((h) => !h.catchUp && !h.bonus).map((h) => h.no));
     p.streak = 0;
     for (let n = q.no; n >= 1; n--) { if (nos.has(n)) p.streak++; else break; }
-    p.score = p.history.reduce((s, h) => s + h.pts, 0);
+    p.score = Math.max(0, p.history.reduce((s, h) => s + h.pts, 0));
   }
 }
 
