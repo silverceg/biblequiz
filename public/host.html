@@ -263,13 +263,21 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
             background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 26px;
             box-shadow:0 30px 80px rgba(0,0,0,.55);animation:viewIn .3s cubic-bezier(.2,.9,.3,1)}
 .bh2{display:flex;align-items:center;gap:14px}
-.bh2 h2{font-family:var(--display);font-size:28px;color:var(--accent);margin-right:auto}
+.bh2 h2{font-family:var(--display);font-size:28px;color:var(--accent)}
 .allrow{display:flex;align-items:center;gap:14px;background:rgba(255,194,75,.12);border:1px solid var(--accent);
         border-radius:14px;padding:11px 16px}
 .allrow .nm{font-family:var(--display);font-size:21px;color:var(--accent)}
 .blist{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0}
 .blist .brow{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border-radius:12px;padding:8px 14px}
-.blist .brow .nm{font-family:var(--display);font-size:20px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.blist .brow .nm{font-family:var(--display);font-size:20px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+                 background:none;border:1px solid transparent;border-radius:9px;padding:3px 9px;text-align:left;color:inherit;cursor:text;transition:border-color .15s,background .15s}
+.blist .brow .nm:hover{border-color:var(--accent);background:rgba(255,194,75,.1)}
+.nmedit{flex:1;min-width:0;font-family:var(--display);font-size:20px;padding:3px 9px;border-radius:9px;
+        background:rgba(255,255,255,.1);border:1px solid var(--accent);color:var(--paper);outline:none}
+.xbtn{background:none;border:1px solid var(--line);color:var(--dim);border-radius:9px;padding:5px 10px;font-size:14px;transition:all .15s}
+.xbtn:hover{border-color:var(--coral);color:var(--coral);background:rgba(255,107,107,.12)}
+.bhint{color:var(--dim);font-size:14px;margin-right:auto}
+.bhint.warn{color:var(--coral)}
 .blist .brow .sc{font-family:var(--display);font-size:19px;color:var(--dim);min-width:74px;text-align:right}
 .blist .brow.off .nm{color:var(--dim)}
 .btns{display:flex;gap:6px;margin-left:auto}
@@ -596,7 +604,9 @@ body[data-kind="intro"] .stage{position:relative}
 
 <div class="bonus hide" id="bonus">
   <div class="box" id="bonus-box">
-    <div class="bh2"><h2>점수 주기</h2><button class="mini" id="bonus-x">닫기 (B)</button></div>
+    <div class="bh2"><h2>참가자 관리</h2><span class="bhint" id="bonus-msg">이름을 클릭하면 고칠 수 있어요</span>
+      <button class="mini" id="m-allowname" data-on="true" title="학생이 자기 폰에서 이름을 바꿀 수 있게 할지">학생 이름변경 허용</button>
+      <button class="mini" id="bonus-x">닫기 (B)</button></div>
     <div class="allrow">
       <div class="nm">참가자 전체</div>
       <div class="btns" data-id="all">
@@ -605,7 +615,7 @@ body[data-kind="intro"] .stage{position:relative}
       </div>
     </div>
     <div class="blist" id="bonus-list"></div>
-    <div class="bnote">발표를 잘했거나 도와준 친구에게 바로 줄 수 있어요. 마이너스도 됩니다.</div>
+    <div class="bnote">이름을 클릭하면 고칠 수 있고, ✕ 로 내보낼 수 있어요. 점수는 마이너스도 됩니다.</div>
   </div>
 </div>
 
@@ -645,8 +655,8 @@ body[data-kind="intro"] .stage{position:relative}
     <button class="mini" id="pts-u10">+10</button>
     <button class="mini" id="pts-u50">+50</button>
   </div>
-  <span class="key">스페이스 진행 · ↑↓ 점수 · B 점수주기 · Q 접속QR · F 전체화면</span>
-  <button class="mini" id="m-bonus">점수 주기 (B)</button>
+  <span class="key">스페이스 진행 · ↑↓ 점수 · B 참가자관리 · Q 접속QR · F 전체화면</span>
+  <button class="mini" id="m-bonus">참가자 관리 (B)</button>
   <button class="mini hide" id="m-host" data-on="true">화면 1/1</button>
   <button class="mini" id="m-speed" data-on="true">속도 보너스</button>
   <button class="mini" id="m-catch" data-on="true" title="중간에 들어온 친구에게 참가자 중간 점수를 주고 시작합니다">중간입장 보정</button>
@@ -735,16 +745,46 @@ function giveBonus(id, pts){
 $("bonus").onclick = (e) => { if (e.target === $("bonus")) socket.emit("host:showBonus", false); };
 $("bonus-x").onclick = () => socket.emit("host:showBonus", false);
 $("m-bonus").onclick = () => { sfx("click"); socket.emit("host:showBonus", !(S && S.showBonus)); };
+$("m-allowname").onclick = () => { sfx("click"); socket.emit("host:allowRename", !(S && S.allowRename)); };
 $("bonus-box").querySelector('.btns[data-id="all"]').onclick = (e) => {
   const p = e.target.dataset.p; if (p) giveBonus("all", Number(p));
 };
 
-let bonusKey = "";
+let bonusKey = "", renamingId = null;
+function startRename(row, p){
+  if (renamingId) return;
+  renamingId = p.id; bonusKey = "";                 // 편집 중에는 목록을 다시 그리지 않는다
+  const nm = row.querySelector(".nm");
+  const input = document.createElement("input");
+  input.className = "nmedit"; input.value = p.name; input.maxLength = 12;
+  nm.replaceWith(input);
+  input.focus(); input.select();
+  const done = (save) => {
+    if (renamingId !== p.id) return;
+    renamingId = null;
+    const v = input.value.trim();
+    if (save && v && v !== p.name) socket.emit("host:rename", { id: p.id, name: v });
+    if (S) { bonusKey = ""; renderBonus(S); }
+  };
+  input.onkeydown = (e) => {
+    if (e.key === "Enter") { e.preventDefault(); done(true); }
+    else if (e.key === "Escape") { e.preventDefault(); done(false); }
+    e.stopPropagation();                             // 스페이스·B·Q 단축키가 끼어들지 않게
+  };
+  input.onblur = () => done(true);
+}
+socket.on("hostError", (m) => {
+  const el = $("bonus-msg"); el.textContent = m; el.classList.add("warn");
+  clearTimeout(el._t); el._t = setTimeout(() => { el.textContent = "이름을 클릭하면 고칠 수 있어요"; el.classList.remove("warn"); }, 3000);
+});
 function renderBonus(s){
   $("bonus").classList.toggle("hide", !s.showBonus);
+  $("m-allowname").dataset.on = s.allowRename;
+  $("m-allowname").textContent = s.allowRename ? "학생 이름변경 허용" : "학생 이름변경 잠금";
   if (!s.showBonus) { bonusKey = ""; return; }
   const list = $("bonus-list");
-  const key = s.board.map(p => p.id + ":" + p.score + ":" + p.connected).join(",");
+  if (renamingId) return;                            // 이름을 고치는 중이면 그대로 둔다
+  const key = s.board.map(p => p.id + ":" + p.name + ":" + p.score + ":" + p.connected).join(",");
   if (key === bonusKey) return;
   const prev = new Map(s.board.map(p => [p.id, p.score]));
   bonusKey = key;
@@ -754,15 +794,21 @@ function renderBonus(s){
     const d = document.createElement("div");
     d.className = "brow" + (p.connected ? "" : " off");
     d.dataset.id = p.id;
-    d.innerHTML = `<div class="nm"></div><div class="sc">${p.score}점</div>
+    d.innerHTML = `<button class="nm" title="클릭하면 이름을 고칩니다"></button><div class="sc">${p.score}점</div>
       <div class="btns"><button data-p="-10">−10</button><button data-p="10">+10</button>
-      <button data-p="50">+50</button><button data-p="100">+100</button></div>`;
-    d.querySelector(".nm").textContent = p.name + (p.connected ? "" : " (접속 끊김)");
+      <button data-p="50">+50</button><button data-p="100">+100</button></div>
+      <button class="xbtn" title="내보내기">✕</button>`;
+    const nm = d.querySelector(".nm");
+    nm.textContent = p.name + (p.connected ? "" : " (접속 끊김)");
+    nm.onclick = () => startRename(d, p);
     d.querySelector(".btns").onclick = (e) => {
       const v = e.target.dataset.p;
       if (!v) return;
       giveBonus(p.id, Number(v));
       d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");
+    };
+    d.querySelector(".xbtn").onclick = () => {
+      if (confirm(`${p.name} 님을 내보낼까요? 점수도 함께 사라집니다.`)) socket.emit("host:kick", p.id);
     };
     list.appendChild(d);
   });
@@ -985,6 +1031,7 @@ function renderQuestion(s){
   // 문제가 바뀔 때만 다시 그린다 (제출이 들어올 때마다 애니메이션이 다시 시작되지 않도록)
   if (key !== qKey) {
     qKey = key;
+    $("feed").innerHTML = ""; seen = new Set();        // 새 문제: 지난 문제 제출자 이름표를 비운다
     const m = $("q-meta"); m.innerHTML = "";
     let ti = 0;
     const tag = (t, hot, id, cls, html) => {
