@@ -227,6 +227,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @keyframes donePop{0%{transform:scale(1)}40%{transform:scale(1.05);box-shadow:0 0 22px rgba(63,224,168,.45)}100%{transform:scale(1);box-shadow:none}}
 .fin.fx-in{animation:finIn .5s cubic-bezier(.2,1.35,.4,1) both}
 @keyframes finIn{from{opacity:0;transform:translateX(-26px) scale(.92)}to{opacity:1;transform:none}}
+.fin .pt{font-family:var(--display);color:var(--mint);font-size:17px;margin-left:auto;padding-right:10px}
 .fin.gold{position:relative;overflow:hidden}
 .fin.gold::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 32%,rgba(255,255,255,.3) 48%,transparent 64%);transform:translateX(-100%);animation:shine 2.8s ease-in-out infinite}
 @keyframes shine{0%{transform:translateX(-110%)}55%,100%{transform:translateX(110%)}}
@@ -256,6 +257,30 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
   .bar em::after,.lane .fill::after,.timer.warn,.row .crown,.row .st{animation:none}
   .stage > div:not(.hide),.qtext.fx-in,.opt.fx-in,.row.fx-in,.fin.fx-in,.tag.fx-in,.bt.fx-in,.hint.fx-in{animation:none;opacity:1;transform:none}
 }
+/* 점수 주기 */
+.bonus{position:fixed;inset:0;z-index:82;display:grid;place-items:center;background:rgba(7,12,24,.88);backdrop-filter:blur(5px)}
+.bonus .box{width:min(880px,92vw);max-height:86vh;display:flex;flex-direction:column;gap:12px;
+            background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 26px;
+            box-shadow:0 30px 80px rgba(0,0,0,.55);animation:viewIn .3s cubic-bezier(.2,.9,.3,1)}
+.bh2{display:flex;align-items:center;gap:14px}
+.bh2 h2{font-family:var(--display);font-size:28px;color:var(--accent);margin-right:auto}
+.allrow{display:flex;align-items:center;gap:14px;background:rgba(255,194,75,.12);border:1px solid var(--accent);
+        border-radius:14px;padding:11px 16px}
+.allrow .nm{font-family:var(--display);font-size:21px;color:var(--accent)}
+.blist{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0}
+.blist .brow{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border-radius:12px;padding:8px 14px}
+.blist .brow .nm{font-family:var(--display);font-size:20px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.blist .brow .sc{font-family:var(--display);font-size:19px;color:var(--dim);min-width:74px;text-align:right}
+.blist .brow.off .nm{color:var(--dim)}
+.btns{display:flex;gap:6px;margin-left:auto}
+.btns button{font-family:var(--display);font-size:16px;padding:6px 13px;border-radius:10px;
+             background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--paper);transition:background .15s,transform .1s}
+.btns button:hover{background:var(--accent);color:#0A0F1C;border-color:transparent}
+.btns button:active{transform:scale(.93)}
+.bnote{color:var(--dim);font-size:14px;line-height:1.5}
+.brow.flash{animation:bflash .7s}
+@keyframes bflash{0%{background:rgba(63,224,168,.5)}100%{background:rgba(255,255,255,.05)}}
+
 /* 상단 바에 늘 떠 있는 접속 QR */
 .joinchip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid var(--line);
           border-radius:12px;padding:5px 12px 5px 6px;cursor:pointer;color:inherit;transition:background .2s,border-color .2s,transform .15s}
@@ -400,6 +425,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .rlist li::before{content:counter(r);position:absolute;left:0;top:1px;width:30px;height:30px;border-radius:50%;
                   background:var(--violet);color:#0A0F1C;font-family:var(--display);font-size:17px;display:grid;place-items:center}
 .rlist li b{color:var(--accent);font-weight:400}
+.ptab{font-family:var(--display);color:var(--accent);font-size:clamp(15px,min(1.5vw,2.5vh),22px);margin-bottom:6px}
 .rtip{margin-top:15px;padding-top:12px;border-top:1px solid var(--line);color:var(--dim);font-size:clamp(14px,1.3vw,18px);line-height:1.5}
 .in-go{margin-top:24px;margin-bottom:10px;font-size:19px;color:var(--dim);animation:fxRise .5s 1.5s both}
 .in-go::before{content:'\2423 ';color:var(--accent)}
@@ -422,7 +448,8 @@ body[data-kind="intro"] .stage{position:relative}
   .qc.fx-in,.qc.gone,.in-cat,.in-stars span,.in-pts,.in-no,.in-label,.start .box,.start .hint,.rlist li,.in-go{animation:none;opacity:1;transform:none}
 }
 /* 오답 보기 / 이름 보기 */
-.peek{margin-left:auto;border-color:var(--coral);color:var(--coral)}
+.mgtab{margin-left:auto;font-family:var(--display);color:var(--accent);font-size:clamp(13px,1.15vw,17px);padding-right:14px}
+.peek{border-color:var(--coral);color:var(--coral)}
 .peek[data-on="true"]{background:var(--coral);color:#fff}
 .peek b{font-weight:400;font-family:var(--display);margin-left:4px}
 .wrongp{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:10px 12px;border-radius:14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);flex-shrink:0;max-height:120px;overflow-y:auto}
@@ -530,6 +557,7 @@ body[data-kind="intro"] .stage{position:relative}
       <div class="tag hot">미니게임</div>
       <h2 id="mg-name"></h2>
       <div class="d" id="mg-desc"></div>
+      <div class="mgtab" id="mg-tab"></div>
       <button class="mini peek" id="mg-wrong">오답 보기 <b id="mg-wn">0</b></button>
     </div>
     <div class="wrongp hide" id="mg-wrongp"></div>
@@ -563,6 +591,21 @@ body[data-kind="intro"] .stage{position:relative}
       <div class="qb" id="qb"></div>
       <aside class="rank"><h3 id="rank-h">지금 순위</h3><div class="board" id="board"></div></aside>
     </div>
+  </div>
+</div>
+
+<div class="bonus hide" id="bonus">
+  <div class="box" id="bonus-box">
+    <div class="bh2"><h2>점수 주기</h2><button class="mini" id="bonus-x">닫기 (B)</button></div>
+    <div class="allrow">
+      <div class="nm">참가자 전체</div>
+      <div class="btns" data-id="all">
+        <button data-p="-10">−10</button><button data-p="10">+10</button>
+        <button data-p="50">+50</button><button data-p="100">+100</button>
+      </div>
+    </div>
+    <div class="blist" id="bonus-list"></div>
+    <div class="bnote">발표를 잘했거나 도와준 친구에게 바로 줄 수 있어요. 마이너스도 됩니다.</div>
   </div>
 </div>
 
@@ -602,7 +645,8 @@ body[data-kind="intro"] .stage{position:relative}
     <button class="mini" id="pts-u10">+10</button>
     <button class="mini" id="pts-u50">+50</button>
   </div>
-  <span class="key">스페이스바 진행 · ↑↓ 점수 · Q 접속QR · F 전체화면</span>
+  <span class="key">스페이스 진행 · ↑↓ 점수 · B 점수주기 · Q 접속QR · F 전체화면</span>
+  <button class="mini" id="m-bonus">점수 주기 (B)</button>
   <button class="mini hide" id="m-host" data-on="true">화면 1/1</button>
   <button class="mini" id="m-speed" data-on="true">속도 보너스</button>
   <button class="mini" id="m-catch" data-on="true" title="중간에 들어온 친구에게 참가자 중간 점수를 주고 시작합니다">중간입장 보정</button>
@@ -669,7 +713,7 @@ function replay(el, cls){
 }
 
 socket.on("connect", () => socket.emit("host:join"));
-socket.on("state", (s) => { S = s; render(s); });
+socket.on("state", (s) => { S = s; window.S = s; render(s); });
 fetch("/api/join-info?origin=" + encodeURIComponent(location.origin))
   .then(r => r.json())
   .then(({ url, qr, fallback }) => {
@@ -682,6 +726,47 @@ fetch("/api/join-info?origin=" + encodeURIComponent(location.origin))
       : "";
   })
   .catch(() => { $("url").textContent = location.origin; $("url-mini").textContent = location.host; });
+
+/* 점수 주기 */
+function giveBonus(id, pts){
+  socket.emit("host:bonus", { id, pts });
+  sfx(pts > 0 ? "up" : "down");
+}
+$("bonus").onclick = (e) => { if (e.target === $("bonus")) socket.emit("host:showBonus", false); };
+$("bonus-x").onclick = () => socket.emit("host:showBonus", false);
+$("m-bonus").onclick = () => { sfx("click"); socket.emit("host:showBonus", !(S && S.showBonus)); };
+$("bonus-box").querySelector('.btns[data-id="all"]').onclick = (e) => {
+  const p = e.target.dataset.p; if (p) giveBonus("all", Number(p));
+};
+
+let bonusKey = "";
+function renderBonus(s){
+  $("bonus").classList.toggle("hide", !s.showBonus);
+  if (!s.showBonus) { bonusKey = ""; return; }
+  const list = $("bonus-list");
+  const key = s.board.map(p => p.id + ":" + p.score + ":" + p.connected).join(",");
+  if (key === bonusKey) return;
+  const prev = new Map(s.board.map(p => [p.id, p.score]));
+  bonusKey = key;
+  list.innerHTML = "";
+  if (!s.board.length) { list.innerHTML = '<div class="bnote">아직 참가자가 없습니다.</div>'; return; }
+  s.board.forEach(p => {
+    const d = document.createElement("div");
+    d.className = "brow" + (p.connected ? "" : " off");
+    d.dataset.id = p.id;
+    d.innerHTML = `<div class="nm"></div><div class="sc">${p.score}점</div>
+      <div class="btns"><button data-p="-10">−10</button><button data-p="10">+10</button>
+      <button data-p="50">+50</button><button data-p="100">+100</button></div>`;
+    d.querySelector(".nm").textContent = p.name + (p.connected ? "" : " (접속 끊김)");
+    d.querySelector(".btns").onclick = (e) => {
+      const v = e.target.dataset.p;
+      if (!v) return;
+      giveBonus(p.id, Number(v));
+      d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");
+    };
+    list.appendChild(d);
+  });
+}
 
 $("joinchip").onclick = () => { sfx("click"); socket.emit("host:qr", true); };
 $("qrbig").onclick = () => socket.emit("host:qr", false);
@@ -746,6 +831,9 @@ const catColor = (() => { const m = new Map(); return (c) => {
   return m.get(c); }; })();
 const starsHtml = (d) => d ? Array.from({length:3}, (_, i) => i < d ? "★" : "<i>★</i>").join("") : "";
 const DIFF_NAME = { 1: "쉬움", 2: "보통", 3: "어려움" };
+const tableLine = (t) => !t ? "" :
+  t.n <= 3 ? `1등 ${t.ranks[0]} · 2등 ${t.ranks[1]} · 3등 ${t.ranks[2]}점`
+           : `1등 ${t.ranks[0]} · 2등 ${t.ranks[1]} · 3등 ${t.ranks[2]} · 4등 ${t.hi}점에서 꼴찌 ${t.lo}점까지 (${t.n}명 기준)`;
 
 setInterval(() => {
   if (!S) return;
@@ -774,6 +862,7 @@ function render(s){
   $("timer").classList.toggle("hide", !(s.phase === "question" || s.phase === "minigame"));
   $("joinchip").classList.toggle("hide", s.phase === "lobby");   // 대기실엔 큰 QR이 이미 있음
   $("qrbig").classList.toggle("hide", !s.showQR);
+  renderBonus(s);
 
   if (s.phase === "question") {
     setNum($("g-num"), s.submitted); $("g-den").textContent = " / " + s.connected;
@@ -832,9 +921,9 @@ function renderIntro(s){
   $("in-cat").textContent = q.type === "minigame" ? q.name : q.category;
   $("in-stars").innerHTML = q.type === "minigame" ? "" :
     Array.from({length:3}, (_, i) => `<span class="${i < q.difficulty ? "" : "off"}" style="animation-delay:${.55 + i * .16}s">★</span>`).join("");
-  $("in-pts").innerHTML = q.type === "minigame" ? "<b>미니게임</b>" : `<b>${q.points}</b>점 <span style="color:var(--dim);font-size:.6em">· ${DIFF_NAME[q.difficulty] || ""}</span>`;
+  $("in-pts").innerHTML = q.type === "minigame" ? `<b>1등 ${q.table ? q.table.ranks[0] : 300}</b>점` : `<b>${q.points}</b>점 <span style="color:var(--dim);font-size:.6em">· ${DIFF_NAME[q.difficulty] || ""}</span>`;
   $("in-no").textContent = q.type === "minigame"
-    ? `${q.no}번 · 완주 순서대로 점수 (1등 250점 … 5등 90점)`
+    ? `${q.no}번 · 먼저 끝낸 순서대로 점수`
     : `${q.no}번 · ${q.type === "choice" ? "객관식" : "주관식"}${q.kind === "nonsense" ? " · 넌센스 타임" : ""}`;
 
   const R = $("in-rules"), hasRules = !!(q.how && q.how.length);
@@ -848,7 +937,9 @@ function renderIntro(s){
       li.innerHTML = line; li.style.animationDelay = (.6 + i * .15) + "s";
       ol.appendChild(li);
     });
-    $("in-rtip").textContent = `제한 시간 ${q.limit}초 · ${q.tip || ""}`;
+    $("in-rtip").innerHTML = q.table
+      ? `<div class="ptab">${tableLine(q.table)}</div><div>제한 시간 ${q.limit}초 · 끝까지 못해도 진행한 만큼 최대 ${q.table.unfin}점</div>`
+      : `제한 시간 ${q.limit}초 · ${q.tip || ""}`;
   }
   $("in-go").textContent = hasRules ? "설명이 끝나면 스페이스바 — 그때부터 시작입니다"
                                     : "스페이스바를 누르면 문제가 열립니다";
@@ -1047,6 +1138,7 @@ let miniKey = "", laneMap = new Map(), finShown = 0;
 function renderMini(s){
   const m = s.mini;
   renderWrong(m, s.showWrong);
+  $("mg-tab").textContent = s.miniTable ? tableLine(s.miniTable) : "";
   $("mg-name").textContent = m.name;
   $("mg-desc").textContent = s.phase === "minigame" ? m.tip : "게임 종료";
   $("mg-ph").textContent = s.phase === "minigame" ? "완주 순위 (실시간)" : `완주 ${m.doneCount}명`;
@@ -1060,7 +1152,7 @@ function renderMini(s){
   m.finishers.forEach(f => {
     const d = document.createElement("div");
     d.className = "fin" + (f.rank === 1 ? " gold" : "") + (f.rank > finShown ? " fx-in" : "");
-    d.innerHTML = `<div class="r">${f.rank}</div><div class="n"></div><div class="t">${f.sec}초</div>`;
+    d.innerHTML = `<div class="r">${f.rank}</div><div class="n"></div><div class="pt">+${f.pts}</div><div class="t">${f.sec}초</div>`;
     d.querySelector(".n").textContent = f.name; fin.appendChild(d);
   });
   if (m.doneCount > finShown) {
@@ -1258,11 +1350,16 @@ function renderControls(s){
 }
 
 /* 점수 조절 — 문제가 열려 있으면 그 문제의 점수, 아니면 기본 점수 */
-const pointsMode = (s) => (s && ["intro", "question", "grading"].includes(s.phase) && s.question && s.question.type !== "minigame" ? "q" : "base");
-function pointsValue(s){ return pointsMode(s) === "q" ? s.points : s.basePoints; }
+const pointsMode = (s) => (s && ["intro", "question", "grading", "minigame", "minigame_result"].includes(s.phase) && s.question ? "q" : "base");
+const isMiniQ = (s) => !!(s && s.question && s.question.type === "minigame");
+function pointsValue(s){
+  if (pointsMode(s) !== "q") return s.basePoints;
+  return isMiniQ(s) ? (s.miniTable ? s.miniTable.top : s.basePoints * 3) : s.points;
+}
 function renderPoints(s){
   const mode = pointsMode(s);
-  $("pts-lab").textContent = mode === "q" ? `${s.question.no}번 점수` : "기본 점수 (★★)";
+  $("pts-lab").textContent = mode !== "q" ? "기본 점수 (★★)"
+    : isMiniQ(s) ? `${s.question.no}번 1등 점수` : `${s.question.no}번 점수`;
   setNum($("pts-val"), pointsValue(s));
 }
 function nudgePoints(delta){
@@ -1306,12 +1403,14 @@ function toggleFull(){
 document.addEventListener("keydown", (e) => {
   if (e.key === "f" || e.key === "F") return toggleFull();
   if (e.key === "q" || e.key === "Q") { socket.emit("host:qr", !(S && S.showQR)); return; }
+  if (e.key === "b" || e.key === "B") { socket.emit("host:showBonus", !(S && S.showBonus)); return; }
   if ((e.key === "Escape" || e.key === "Backspace") && S && S.phase === "leaderboard" && S.openCat) {
     e.preventDefault(); goCat(null); return;
   }
   if (e.key === "ArrowUp") { e.preventDefault(); return nudgePoints(10); }
   if (e.key === "ArrowDown") { e.preventDefault(); return nudgePoints(-10); }
   if (e.code !== "Space" || !S) return;
+  if (S.showBonus) { e.preventDefault(); return; }   // 점수 주기 창이 열려 있으면 진행 금지
   e.preventDefault();
   const ev = { lobby:"host:start", intro:"host:openQuestion", question:"host:closeQuestion", minigame:"host:closeQuestion",
                grading:"host:next", minigame_result:"host:next", leaderboard:"host:openQuestion" }[S.phase];

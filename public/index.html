@@ -301,6 +301,7 @@ input:focus{box-shadow:0 0 0 4px rgba(255,194,75,.15)}
 .rlist li::before{content:counter(r);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;
                   background:var(--violet);color:#0A0F1C;font-family:var(--display);font-size:13px;display:grid;place-items:center}
 .rlist li b{color:var(--accent);font-weight:400}
+.ptab{font-family:var(--display);color:var(--accent);font-weight:400;font-size:14px;line-height:1.6}
 .rtip{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);color:var(--dim);font-size:13px;line-height:1.5}
 
 /* 여리고 성 */
@@ -340,6 +341,7 @@ input:focus{box-shadow:0 0 0 4px rgba(255,194,75,.15)}
        border-radius:9px;padding:5px 10px;font-size:13px}
 .lbrow .r{font-family:var(--display);color:var(--accent);font-size:12px}
 .lbrow .b{font-family:var(--display);color:var(--mint)}
+.rr .pt{font-family:var(--display);color:var(--mint);font-size:13px;margin-left:auto;padding-right:8px}
 .lbrow.me{border-color:var(--accent)}
 
 @media (prefers-reduced-motion:reduce){
@@ -451,6 +453,15 @@ function toast(html, ms = 4000){
   toast._t = setTimeout(() => t.classList.remove("on"), ms);
 }
 socket.on("joinError", (m) => renderJoin(m));
+socket.on("bonus", ({ pts }) => {
+  if (pts > 0) {
+    toast(`선생님이 <b>+${pts}점</b>을 주셨어요!`, 5000);
+    ring("var(--mint)"); confetti(50); buzz([30, 50, 30]);
+  } else {
+    toast(`점수가 <b>${pts}점</b> 조정됐어요.`, 4500);
+    buzz(120);
+  }
+});
 socket.on("kicked", () => { localStorage.removeItem(KEY); me = null; renderJoin("퇴장 처리되었습니다."); });
 socket.on("state", (s) => { S = s; render(s); });
 socket.on("disconnect", () => { $("foot").textContent = "연결이 끊겼어요. 다시 연결하는 중"; });
@@ -778,7 +789,7 @@ function viewMiniResult(s){
   wrap.innerHTML = `<div class="card ${m.myDone ? "ok" : ""}">
       <div class="big-t">${m.myDone ? m.myRank + "등 완주!" : "게임 종료"}</div>
       <div class="gain">+${s.me?.lastGain ?? 0}점</div>
-      <div class="sm">${esc(m.name)}</div></div>
+      <div class="sm">${m.myDone ? `${m.doneCount}명 중 ${m.myRank}번째로 끝냈어요` : esc(m.name)}</div></div>
     <div class="ranks" id="rk"></div>
     <div class="card"><div class="big-t">${s.me?.score ?? 0}점</div>
     <div class="sm">${s.playerCount}명 중 <b>${s.me?.rank}등</b></div></div>`;
@@ -787,12 +798,15 @@ function viewMiniResult(s){
     const d = document.createElement("div");
     d.className = "rr fx-in" + (f.name === s.me?.name ? " me" : "");
     d.style.animationDelay = (150 + Math.min(i, 8) * 80) + "ms";
-    d.innerHTML = `<div class="n">${f.rank}</div><div class="w"></div><div class="p">${f.sec}초</div>`;
+    d.innerHTML = `<div class="n">${f.rank}</div><div class="w"></div><div class="pt">+${f.pts}</div><div class="p">${f.sec}초</div>`;
     d.querySelector(".w").textContent = f.name; rk.appendChild(d);
   });
 }
 
 const DIFF_NAME = { 1: "쉬움", 2: "보통", 3: "어려움" };
+const tableLine = (t) => !t ? "" :
+  t.n <= 3 ? `1등 ${t.ranks[0]} · 2등 ${t.ranks[1]} · 3등 ${t.ranks[2]}점`
+           : `1등 ${t.ranks[0]} · 2등 ${t.ranks[1]} · 3등 ${t.ranks[2]}<br />4등 ${t.hi}점 → 꼴찌 ${t.lo}점 (${t.n}명 기준)`;
 function viewIntro(s){
   const q = s.intro; if (!q) return;
   const mini = q.type === "minigame";
@@ -803,13 +817,13 @@ function viewIntro(s){
     <div class="intro ${mini ? "mini" : ""}">
       <div class="icat">${esc(mini ? q.name : q.category)}</div>
       ${stars ? `<div class="istars">${stars}</div>` : ""}
-      <div class="ipts">${mini ? "완주 순서대로 점수" : `<b>${q.points}</b>점 · ${DIFF_NAME[q.difficulty] || ""}`}</div>
+      <div class="ipts">${mini ? `<b>1등 ${q.table ? q.table.ranks[0] : 300}</b>점` : `<b>${q.points}</b>점 · ${DIFF_NAME[q.difficulty] || ""}`}</div>
       <div class="ino">${q.no}번${mini ? ` · 제한 ${q.limit}초` : ` · ${q.type === "choice" ? "객관식" : "주관식"}`}${q.kind === "nonsense" ? " · 넌센스 타임" : ""}</div>
     </div>
     ${how ? `<div class="rules fx-in" style="animation-delay:.35s">
       <div class="rdesc">${esc(q.desc || "")}</div>
       <ol class="rlist">${how}</ol>
-      ${q.tip ? `<div class="rtip">${esc(q.tip)}</div>` : ""}
+      ${q.table ? `<div class="rtip"><b class="ptab">${tableLine(q.table)}</b><br />끝까지 못해도 진행한 만큼 최대 ${q.table.unfin}점</div>` : (q.tip ? `<div class="rtip">${esc(q.tip)}</div>` : "")}
     </div>` : ""}
     <p class="sub fx-in" style="animation-delay:.9s">${mini ? "규칙을 읽고 손가락을 풀어 두세요!" : "선생님이 열면 바로 시작됩니다. 준비!"}</p>`;
 }
