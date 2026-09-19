@@ -125,7 +125,8 @@ const game = {
   namesOpen: [],        // 답 카드에서 이름을 펼쳐 둔 것
   showWrong: false,     // 미니게임 오답 보기
   showQR: false,        // 접속 QR 크게 보기
-  showBonus: false,     // 점수 주기 창
+  showBonus: false,     // 참가자 관리 창
+  allowRename: true,    // 학생이 스스로 이름을 고칠 수 있는지
   lastDone: 0,          // 방금 푼 문제 번호 (선택판에서 사라지는 애니메이션용)
   introTimer: null,
   players: new Map(),
@@ -206,6 +207,17 @@ function miniView() {
     finishers,
     doneCount: finishers.length,
   };
+}
+
+/* 이름 바꾸기 공통 검사 */
+function renamePlayer(p, name) {
+  const clean = (name || "").toString().trim().replace(/\s+/g, " ").slice(0, 12);
+  if (!clean) return { error: "이름을 비울 수는 없어요." };
+  if (clean === p.name) return { ok: false };
+  if ([...game.players.values()].some((x) => x.id !== p.id && x.name === clean))
+    return { error: `"${clean}" 은(는) 이미 있는 이름이에요.` };
+  p.name = clean;
+  return { ok: true };
 }
 
 function lobbyTop() {
@@ -295,6 +307,7 @@ function hostState() {
     showWrong: game.showWrong,
     showQR: game.showQR,
     showBonus: game.showBonus,
+    allowRename: game.allowRename,
     hostCount: hostCount(),
     list: questionList(),
     intro: introInfo(),
@@ -349,6 +362,7 @@ function playerState(id) {
     correctIndex: game.phase === "grading" && q ? q.answerIndex : -1,
     myAnswer: mine ? { text: mine.text, choice: mine.choice, correct: mine.correct } : null,
     top: board.map((p) => ({ name: p.name, score: p.score, streak: p.streak })),
+    allowRename: game.allowRename,
     lobbyBest: p?.lobbyBest || 0,
     lobbyTop: lobbyTop(),
     playerCount: game.players.size,
@@ -510,13 +524,38 @@ io.on("connection", (socket) => {
       : [game.players.get(msg.id)].filter(Boolean);
     for (const p of targets) {
       p.history = p.history || [];
-      p.history.push({ no: -1, pts, bonus: true });     // 문제 번호가 아니라서 채점 때 지워지지 않는다
-      p.score = Math.max(0, p.history.reduce((t, h) => t + h.pts, 0));
-      if (p.socketId) io.to(p.socketId).emit("bonus", { pts });
+      const sum = p.history.reduce((t, h) => t + h.pts, 0);
+      const give = pts < 0 ? Math.max(pts, -sum) : pts;  // 0점 밑으로는 빼지 않는다 (나중에 딴 점수를 갉아먹지 않도록)
+      if (!give) continue;
+      p.history.push({ no: -1, pts: give, bonus: true }); // 문제 번호가 아니라서 채점 때 지워지지 않는다
+      p.score = Math.max(0, sum + give);
+      if (p.socketId) io.to(p.socketId).emit("bonus", { pts: give });
     }
     pushAll();
   });
   socket.on("host:showBonus", (on) => { game.showBonus = !!on; pushHost(); });
+  socket.on("host:allowRename", (on) => { game.allowRename = !!on; pushAll(); });
+
+  // 참가자 이름 고치기 (선생님)
+  socket.on("host:rename", ({ id, name } = {}) => {
+    const p = game.players.get(id);
+    if (!p) return;
+    const r = renamePlayer(p, name);
+    if (r.error) return socket.emit("hostError", r.error);
+    if (r.ok && p.socketId) io.to(p.socketId).emit("renamed", { name: p.name });
+    if (r.ok) pushAll();
+  });
+
+  // 이름 고치기 (학생 본인)
+  socket.on("player:rename", (name) => {
+    const p = game.players.get(socket.data.playerId);
+    if (!p) return;
+    if (!game.allowRename) return socket.emit("renameError", "지금은 이름을 바꿀 수 없어요.");
+    const r = renamePlayer(p, name);
+    if (r.error) return socket.emit("renameError", r.error);
+    if (r.ok) { socket.emit("renamed", { name: p.name }); pushAll(); }
+    else socket.emit("renamed", { name: p.name });
+  });
 
   // 지금 열려 있는 문제의 점수를 바꾼다 (채점 중에 바꾸면 즉시 다시 계산)
   socket.on("host:points", (v) => {
@@ -538,7 +577,10 @@ io.on("connection", (socket) => {
     const p = game.players.get(pid);
     if (p?.socketId) io.to(p.socketId).emit("kicked");
     game.players.delete(pid); game.answers.delete(pid);
-    game.mini?.results.delete(pid);
+    if (game.mini) {
+      game.mini.results.delete(pid); game.mini.wrongs.delete(pid);
+      game.mini.order = game.mini.order.filter((x) => x !== pid);
+    }
     pushAll();
   });
   socket.on("host:reset", () => {
@@ -560,6 +602,7 @@ io.on("connection", (socket) => {
     const clean = (name || "").trim().slice(0, 12);
     if (!clean) return socket.emit("joinError", "이름을 입력해 주세요.");
     let player = id && game.players.get(id);
+    const byId = !!player;              // 저장된 정보로 돌아온 경우 (선생님이 바꾼 이름을 지키기 위해)
     let restored = false, given = 0;
 
     // 폰이 꺼졌거나 새로고침해서 저장된 정보가 날아간 경우: 같은 이름의 끊긴 사람으로 되돌려 준다
@@ -580,7 +623,8 @@ io.on("connection", (socket) => {
       game.players.set(newId, player);
     }
 
-    player.name = clean; player.connected = true; player.socketId = socket.id;
+    if (!byId) player.name = clean;    // 선생님이 고친 이름이 옛 이름으로 되돌아가지 않도록
+    player.connected = true; player.socketId = socket.id;
     socket.data.playerId = player.id;
     socket.emit("joined", { id: player.id, name: player.name, catchUp: given, restored, score: player.score });
     socket.emit("state", playerState(player.id));
