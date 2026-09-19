@@ -23,48 +23,56 @@ const MINIGAMES = {
     desc: "카드 16장 중 같은 말씀 짝 8쌍을 모두 찾으세요.",
     tip: "가장 빨리 다 찾은 순서대로 점수를 드립니다.",
     limit: 100,
+    how: ["카드 16장이 모두 뒤집혀 있습니다.", "두 장씩 눌러서 같은 낱말을 찾으세요.", "짝이 맞으면 그대로 열려 있고, 틀리면 다시 덮입니다.", "8쌍을 모두 찾으면 완주! 빠른 순서대로 점수를 받습니다."],
   },
   order: {
-    name: "에베소서 순서 맞추기",
-    desc: "섞여 있는 항목을 올바른 순서대로 눌러 주세요.",
+    name: "성경 순서 맞추기",
+    desc: "섞여 있는 사건을 성경에 나오는 순서대로 눌러 주세요.",
     tip: "세 세트를 모두 통과하면 완주입니다. 틀리면 잠깐 멈춥니다.",
     limit: 100,
+    how: ["섞여 있는 사건이 세로로 나옵니다.", "성경에 나오는 순서대로 <b>맨 위 것부터 차례로</b> 누르세요.", "틀린 것을 누르면 1.3초 동안 화면이 멈춥니다.", "세 세트를 모두 끝내면 완주!"],
   },
   speed: {
-    name: "에베소서 낱말 스피드 탭",
-    desc: "에베소서에 실제로 나오는 말만 골라 누르세요.",
-    tip: "30초 안에 15개! 없는 말을 누르면 하나씩 깎이고 1초 멈춥니다.",
+    name: "66권 스피드 탭",
+    desc: "화면에 뜨는 이름 중 진짜 성경책만 골라 누르세요.",
+    tip: "30초 안에 15개! 가짜 책 이름을 누르면 하나씩 깎이고 1초 멈춥니다.",
     limit: 34,
+    how: ["책 이름 여섯 개가 계속 바뀌며 나옵니다.", "<b>진짜 성경책 이름만</b> 누르세요.", "가짜(모세서, 다윗기, 솔로몬복음…)를 누르면 점수가 1점 깎이고 1초 멈춥니다.", "15개를 모으면 완주!"],
   },
   verse: {
-    name: "에베소서 빈칸 채우기",
-    desc: "에베소서 말씀의 빈칸에 들어갈 단어를 네 개 중에서 고르세요.",
+    name: "말씀 빈칸 채우기",
+    desc: "유명한 말씀의 빈칸에 들어갈 단어를 네 개 중에서 고르세요.",
     tip: "8구절을 다 맞히면 완주. 틀리면 잠깐 멈춥니다.",
     limit: 90,
+    how: ["유명한 말씀이 빈칸과 함께 나옵니다.", "빈칸에 들어갈 말을 네 개 중에서 고르세요.", "틀리면 1.3초 동안 멈춥니다. 찍지 말고 생각하세요!", "8구절을 맞히면 완주!"],
   },
   catch: {
-    name: "에베소서 물고기 잡기",
+    name: "베드로의 물고기 잡기",
     desc: "움직이는 표시가 초록 구간 안에 있을 때 누르면 한 마리를 잡습니다.",
     tip: "10마리를 잡으면 완주. 잡을수록 빨라지고 구간이 좁아집니다.",
     limit: 70,
+    how: ["막대 위를 표시가 왔다 갔다 합니다.", "표시가 <b>초록 구간 안에 있을 때</b> 버튼을 누르세요.", "빗나가면 0.9초 멈춥니다. 잡을수록 빨라지고 구간이 좁아집니다.", "물고기 10마리를 잡으면 완주!"],
   },
   scramble: {
-    name: "낱말 글자 맞추기",
-    desc: "섞여 있는 글자를 순서대로 눌러 에베소서의 낱말을 완성하세요.",
-    tip: "8개를 다 맞히면 완주. 틀린 글자를 누르면 잠깐 멈춥니다.",
+    name: "이름 글자 맞추기",
+    desc: "섞여 있는 글자를 순서대로 눌러 성경 인물의 이름을 완성하세요.",
+    tip: "8명을 다 맞히면 완주. 틀린 글자를 누르면 잠깐 멈춥니다.",
     limit: 90,
+    how: ["이름 글자가 뒤죽박죽 섞여 나옵니다.", "<b>첫 글자부터 순서대로</b> 눌러 이름을 완성하세요.", "순서가 틀리면 1.2초 멈춥니다.", "인물 8명을 완성하면 완주!"],
   },
   jericho: {
     name: "여리고 성 무너뜨리기",
     desc: "핸드폰을 힘껏 계속 흔들어 성벽을 무너뜨리세요.",
     tip: "60번 넘게 흔들어야 무너집니다! 흔들기가 안 되는 폰은 성벽을 빠르게 두드려도 됩니다.",
     limit: 45,
+    how: ["화면에 벽돌로 쌓은 성벽이 있습니다.", "핸드폰을 <b>힘껏 계속 흔드세요.</b> 흔들 때마다 벽돌이 떨어집니다.", "63번 흔들어야 무너집니다. 흔든 횟수가 화면에 나옵니다.", "흔들기가 안 되는 폰은 성벽을 빠르게 두드리세요 (100번).", "아이폰은 \"흔들기 허용하기\" 버튼을 먼저 눌러 주세요."],
   },
   count: {
     name: "숫자 맞추기 (+ / −)",
-    desc: "에베소서 숫자 문제! + − 버튼을 눌러 숫자를 맞춘 뒤 '정답!'을 누르세요.",
+    desc: "성경 속 숫자 문제! + − 버튼을 눌러 숫자를 맞춘 뒤 '정답!'을 누르세요.",
     tip: "5문제를 먼저 다 맞힌 사람이 1등. 틀리면 잠깐 멈춥니다.",
     limit: 100,
+    how: ["성경 속 숫자 문제가 나옵니다.", "<b>+ 와 −</b> 버튼을 눌러 숫자를 맞추세요.", "다 맞췄으면 <b>정답!</b> 버튼을 누릅니다.", "틀리면 1.5초 멈추니 신중하게!", "5문제를 맞히면 완주!"],
   },
 };
 
@@ -109,9 +117,14 @@ const game = {
   index: -1,
   openedAt: 0,
   speedBonus: true,
+  catchUp: true,        // 중간에 들어온 친구에게 평균 점수를 주고 시작
   basePoints: 100,      // 난이도 ★★ 기준 점수
   points: new Map(),    // 문제번호 -> 호스트가 바꾼 점수
   done: new Set(),      // 이미 푼 문제 번호 (선택판에서 사라짐)
+  openCat: null,        // 선택판에서 열어 둔 키워드 (메인 화면 여러 대가 같이 움직이도록)
+  namesOpen: [],        // 답 카드에서 이름을 펼쳐 둔 것
+  showWrong: false,     // 미니게임 오답 보기
+  showQR: false,        // 접속 QR 크게 보기
   lastDone: 0,          // 방금 푼 문제 번호 (선택판에서 사라지는 애니메이션용)
   introTimer: null,
   players: new Map(),
@@ -144,7 +157,7 @@ const currentQuestion = () => game.questions[game.index] || null;
 
 function ranked() {
   return [...game.players.values()]
-    .map((p) => ({ id: p.id, name: p.name, score: p.score, connected: p.connected, streak: p.streak || 0 }))
+    .map((p) => ({ id: p.id, name: p.name, score: p.score, connected: p.connected, streak: p.streak || 0, late: !!p.late }))
     .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name, "ko"));
 }
 
@@ -200,6 +213,17 @@ function lobbyTop() {
     .map((p) => ({ name: p.name, best: p.lobbyBest }));
 }
 
+/* 중간에 들어온 친구가 받을 점수 — 참가자들의 중간값(median). 꼴찌가 되지도, 1등이 되지도 않게. */
+function catchUpScore() {
+  if (!game.catchUp || game.phase === "lobby") return 0;
+  const arr = [...game.players.values()]
+    .filter((p) => p.history.some((h) => !h.catchUp))     // 실제로 문제를 푼 사람만 기준으로
+    .map((p) => p.score).sort((a, b) => a - b);
+  if (!arr.length) return 0;
+  const mid = arr.length % 2 ? arr[(arr.length - 1) / 2] : (arr[arr.length / 2 - 1] + arr[arr.length / 2]) / 2;
+  return Math.max(0, Math.round(mid / 10) * 10);
+}
+
 /* 선택판용 문제 목록 */
 function questionList() {
   return game.questions.map((q) => ({
@@ -213,7 +237,9 @@ function introInfo() {
   const q = currentQuestion();
   if (game.phase !== "intro" || !q) return null;
   return { no: q.no, type: q.type, kind: q.kind, category: q.category, difficulty: q.difficulty,
-           points: q.type === "minigame" ? 0 : qPoints(q), name: q.name || null, until: game.introUntil || 0 };
+           points: q.type === "minigame" ? 0 : qPoints(q), name: q.name || null,
+           desc: q.desc || null, tip: q.tip || null, how: q.how || null, limit: q.limit || 0,
+           until: game.introUntil || 0 };
 }
 
 function hostState() {
@@ -225,9 +251,16 @@ function hostState() {
     total: game.questions.length,
     doneCount: game.done.size,
     lastDone: game.lastDone,
+    openCat: game.openCat,
+    namesOpen: game.namesOpen,
+    showWrong: game.showWrong,
+    showQR: game.showQR,
+    hostCount: hostCount(),
     list: questionList(),
     intro: introInfo(),
     speedBonus: game.speedBonus,
+    catchUp: game.catchUp,
+    catchUpScore: catchUpScore(),
     basePoints: game.basePoints,
     points: qPoints(q),
     openedAt: game.openedAt,
@@ -253,6 +286,7 @@ function playerState(id) {
   return {
     phase: game.phase,
     me: p && { name: p.name, score: p.score, streak: p.streak || 0, lastGain: p.lastGain || 0,
+               late: !!p.late, catchUp: p.catchUp || 0,
                rank: board.findIndex((x) => x.id === id) + 1 },
     total: game.questions.length,
     doneCount: game.done.size,
@@ -280,6 +314,18 @@ function playerState(id) {
 }
 
 const pushHost = () => io.to("host").emit("state", hostState());
+
+/* 켜져 있는 메인 화면(대시보드) 관리 — 여러 대를 켜도 소리는 한 대에서만 나도록 */
+let hostOrder = [];
+function hostCount(){
+  const room = io.sockets.adapter.rooms.get("host");
+  hostOrder = hostOrder.filter((id) => room && room.has(id));
+  return hostOrder.length;
+}
+function announceHosts(){
+  const n = hostCount();
+  hostOrder.forEach((id, i) => io.to(id).emit("hostInfo", { index: i + 1, count: n }));
+}
 function pushPlayers() {
   for (const [id, p] of game.players) if (p.socketId) io.to(p.socketId).emit("state", playerState(id));
 }
@@ -330,7 +376,17 @@ app.get("/api/music", (req, res) => {
 
 /* ---------------- 소켓 ---------------- */
 io.on("connection", (socket) => {
-  socket.on("host:join", () => { socket.join("host"); socket.emit("state", hostState()); });
+  socket.on("host:join", () => {
+    socket.join("host");
+    hostOrder.push(socket.id);
+    socket.emit("hostInfo", { index: hostOrder.length, count: hostCount() });
+    socket.emit("state", hostState());
+    announceHosts();
+  });
+  socket.on("host:openCat", (c) => { game.openCat = c || null; pushHost(); });
+  socket.on("host:names", (keys) => { game.namesOpen = Array.isArray(keys) ? keys.slice(0, 60).map(String) : []; pushHost(); });
+  socket.on("host:wrong", (on) => { game.showWrong = !!on; pushHost(); });
+  socket.on("host:qr", (on) => { game.showQR = !!on; pushHost(); });
 
   socket.on("host:start", () => {
     if (!game.questions.length) return;
@@ -384,6 +440,11 @@ io.on("connection", (socket) => {
     if (!["grading", "minigame_result"].includes(game.phase)) return;
     const q = currentQuestion();
     if (q) { game.done.add(q.no); game.lastDone = q.no; }
+    if (game.openCat) {          // 그 키워드를 다 풀었으면 목록으로 되돌린다
+      const left = game.questions.some((x) => !game.done.has(x.no) &&
+        (x.type === "minigame" ? "미니게임" : x.category) === game.openCat);
+      if (!left) game.openCat = null;
+    }
     game.answers.clear(); game.mini = null;
     if (game.done.size >= game.questions.length) { game.phase = "finished"; saveResults(); }
     else game.phase = "leaderboard";
@@ -398,6 +459,7 @@ io.on("connection", (socket) => {
 
   socket.on("host:leaderboard", () => { game.phase = "leaderboard"; pushAll(); });
   socket.on("host:speedBonus", (on) => { game.speedBonus = !!on; pushHost(); });
+  socket.on("host:catchUp", (on) => { game.catchUp = !!on; pushHost(); });
 
   // 지금 열려 있는 문제의 점수를 바꾼다 (채점 중에 바꾸면 즉시 다시 계산)
   socket.on("host:points", (v) => {
@@ -426,9 +488,11 @@ io.on("connection", (socket) => {
     if (game.introTimer) clearTimeout(game.introTimer);
     game.questions = loadQuestions();
     game.phase = "lobby"; game.index = -1; game.answers.clear(); game.mini = null;
-    game.points.clear(); game.done.clear(); game.lastDone = 0;
+    game.points.clear(); game.done.clear(); game.lastDone = 0; game.openCat = null;
+    game.namesOpen = []; game.showWrong = false; game.showQR = false;
     for (const p of game.players.values()) {
       p.score = 0; p.history = []; p.streak = 0; p.lastGain = 0; p.lobbyBest = 0;
+      p.late = false; p.catchUp = 0;
     }
     pushAll();
   });
@@ -438,16 +502,29 @@ io.on("connection", (socket) => {
     const clean = (name || "").trim().slice(0, 12);
     if (!clean) return socket.emit("joinError", "이름을 입력해 주세요.");
     let player = id && game.players.get(id);
+    let restored = false, given = 0;
+
+    // 폰이 꺼졌거나 새로고침해서 저장된 정보가 날아간 경우: 같은 이름의 끊긴 사람으로 되돌려 준다
     if (!player) {
-      if ([...game.players.values()].some((p) => p.name === clean && p.connected))
+      const same = [...game.players.values()].find((p) => p.name === clean);
+      if (same && same.connected)
         return socket.emit("joinError", "같은 이름이 이미 있어요. 뒤에 한 글자만 더 붙여 주세요.");
+      if (same) { player = same; restored = true; }
+    }
+
+    if (!player) {
       const newId = Math.random().toString(36).slice(2, 10);
-      player = { id: newId, name: clean, score: 0, history: [], streak: 0, lastGain: 0, connected: true };
+      given = catchUpScore();                       // 중간에 들어왔으면 평균만큼 주고 시작
+      player = { id: newId, name: clean, score: given, history: [], streak: 0, lastGain: 0,
+                 connected: true, late: given > 0, catchUp: given };
+      // 채점할 때마다 점수를 기록에서 다시 계산하므로, 보정 점수도 기록으로 남겨 둔다
+      if (given > 0) player.history.push({ no: 0, pts: given, catchUp: true });
       game.players.set(newId, player);
     }
+
     player.name = clean; player.connected = true; player.socketId = socket.id;
     socket.data.playerId = player.id;
-    socket.emit("joined", { id: player.id, name: player.name });
+    socket.emit("joined", { id: player.id, name: player.name, catchUp: given, restored, score: player.score });
     socket.emit("state", playerState(player.id));
     pushHost();
   });
@@ -519,6 +596,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    if (hostOrder.includes(socket.id)) { hostOrder = hostOrder.filter((x) => x !== socket.id); setTimeout(announceHosts, 50); }
     const pid = socket.data.playerId;
     if (pid && game.players.has(pid)) { game.players.get(pid).connected = false; pushHost(); }
   });
@@ -530,6 +608,7 @@ function startIntro(idx) {
   if (game.mini?.timer) clearTimeout(game.mini.timer);
   game.index = idx;
   game.answers.clear(); game.mini = null;
+  game.namesOpen = []; game.showWrong = false;
   game.phase = "intro";          // 호스트가 열 때까지 예고 화면에 머문다
   game.introUntil = 0;
   pushAll();
@@ -579,13 +658,15 @@ function applyScores() {
   for (const p of game.players.values()) {
     p.history = (p.history || []).filter((h) => h.no !== q.no);
     const a = game.answers.get(p.id);
+    const solved = p.history.filter((h) => !h.catchUp).length;
+    if (p.late && solved >= 2) p.late = false;             // 두 문제쯤 참여하면 '중간입장' 표시를 뗀다
     if (a && a.correct) {
       let pts = qPoints(q);
       if (game.speedBonus) pts += Math.max(0, 50 - order.indexOf(p.id) * 10);
       p.history.push({ no: q.no, pts });
       p.lastGain = pts;
     } else p.lastGain = 0;
-    const nos = new Set(p.history.map((h) => h.no));
+    const nos = new Set(p.history.filter((h) => !h.catchUp).map((h) => h.no));
     p.streak = 0;
     for (let n = q.no; n >= 1; n--) { if (nos.has(n)) p.streak++; else break; }
     p.score = p.history.reduce((s, h) => s + h.pts, 0);
