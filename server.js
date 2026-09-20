@@ -431,7 +431,18 @@ app.get("/api/music", (req, res) => {
 });
 
 /* ---------------- 소켓 ---------------- */
-io.on("connection", (socket) => {
+/* 이벤트 처리 중 오류가 나도 퀴즈가 멈추지 않도록 한 겹 감싼다 */
+function safe(socket) {
+  const orig = socket.on.bind(socket);
+  socket.on = (ev, fn) => orig(ev, (...args) => {
+    try { return fn(...args); }
+    catch (e) { console.error(`  [무시된 오류] ${ev}:`, e.message); }
+  });
+  return socket;
+}
+
+io.on("connection", (rawSocket) => {
+  const socket = safe(rawSocket);
   socket.on("host:join", () => {
     socket.join("host");
     hostOrder.push(socket.id);
@@ -537,7 +548,8 @@ io.on("connection", (socket) => {
   socket.on("host:allowRename", (on) => { game.allowRename = !!on; pushAll(); });
 
   // 참가자 이름 고치기 (선생님)
-  socket.on("host:rename", ({ id, name } = {}) => {
+  socket.on("host:rename", (msg) => {
+    const { id, name } = msg || {};
     const p = game.players.get(id);
     if (!p) return;
     const r = renamePlayer(p, name);
@@ -598,8 +610,9 @@ io.on("connection", (socket) => {
   });
 
   /* ---- 학생 ---- */
-  socket.on("player:join", ({ name, id } = {}) => {
-    const clean = (name || "").trim().slice(0, 12);
+  socket.on("player:join", (msg) => {
+    const { name, id } = msg || {};
+    const clean = (name || "").toString().trim().slice(0, 12);
     if (!clean) return socket.emit("joinError", "이름을 입력해 주세요.");
     let player = id && game.players.get(id);
     const byId = !!player;              // 저장된 정보로 돌아온 경우 (선생님이 바꾼 이름을 지키기 위해)
@@ -794,6 +807,10 @@ function saveResults() {
   const csv = "\uFEFF순위,이름,점수\n" + ranked().map((p, i) => `${i + 1},${p.name},${p.score}`).join("\n");
   try { fs.writeFileSync(file, csv); console.log("  결과 저장:", file); } catch {}
 }
+
+/* 최후의 안전망 — 예상 못한 오류가 나도 퀴즈가 멈추지 않는다 */
+process.on("uncaughtException", (e) => console.error("  [서버 오류, 계속 진행]", e.message));
+process.on("unhandledRejection", (e) => console.error("  [서버 오류, 계속 진행]", e && e.message));
 
 server.listen(PORT, "0.0.0.0", () => {
   const mg = game.questions.filter((q) => q.type === "minigame").length;
