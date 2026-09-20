@@ -521,13 +521,19 @@ socket.on("state", (s) => { S = s; render(s); });
 socket.on("disconnect", () => { $("foot").textContent = "연결이 끊겼어요. 다시 연결하는 중"; });
 
 function renderJoin(err){
+  stopJump(); stopMotion(); lobbyBuilt = false;
   $("hud").classList.add("hide");
   wrap.innerHTML = `<h1>성경퀴즈에<br />참여합니다</h1>
     <p class="sub" style="text-align:left">화면에 표시될 이름을 적어 주세요.<br />친구들이 알아볼 수 있는 이름이면 좋아요.</p>
     <input id="nm" maxlength="12" placeholder="이름" autocomplete="off" enterkeyhint="go" />
-    <div class="err">${esc(err || "")}</div><button class="big" id="go">입장하기</button>`;
+    <div class="err" id="join-err">${esc(err || "")}</div><button class="big" id="go">입장하기</button>`;
   const nm = $("nm"); if (me?.name) nm.value = me.name;
-  const go = () => { const n = nm.value.trim(); if (n) socket.emit("player:join", { name: n, id: me?.id }); };
+  const go = () => {
+    const n = nm.value.trim();
+    if (!n) { $("join-err").textContent = "이름을 적어 주세요."; nm.focus(); buzz(120); return; }
+    $("join-err").textContent = "";
+    socket.emit("player:join", { name: n, id: me?.id });
+  };
   $("go").onclick = go;
   nm.addEventListener("keydown", (e) => e.key === "Enter" && go());
 }
@@ -664,7 +670,7 @@ function startJump(){
   function reset(){
     J.alive = true; J.started = true; J.score = 0; J.speed = 4.2;
     J.y = 0; J.vy = 0; J.obs = []; J.next = 420; J.t = 0;
-    $("j-over").classList.add("hide");
+    if ($("j-over")) $("j-over").classList.add("hide");
   }
   function tap(){
     if (!J.alive) { reset(); return; }
@@ -680,14 +686,17 @@ function startJump(){
     J.alive = false;
     const sc = Math.floor(J.score);
     if (sc > J.best) J.best = sc;
-    $("j-best").textContent = Math.max(J.best, S?.lobbyBest || 0);
-    $("j-over").textContent = `${sc}점! 화면을 눌러 다시 시작`;
-    $("j-over").classList.remove("hide");
+    if ($("j-best")) $("j-best").textContent = Math.max(J.best, S?.lobbyBest || 0);
+    if ($("j-over")) {
+      $("j-over").textContent = `${sc}점! 화면을 눌러 다시 시작`;
+      $("j-over").classList.remove("hide");
+    }
     buzz([60, 40, 90]);
     if (sc >= 1) socket.emit("player:lobbyScore", sc);
   }
 
   function loop(now){
+    if (!J || !document.getElementById("jc")) return stopJump();   // 화면이 바뀌었으면 스스로 멈춘다
     J.raf = requestAnimationFrame(loop);
     const k = J.last ? Math.min(3, (now - J.last) / 16.667) : 1;
     J.last = now;
@@ -771,7 +780,8 @@ function startJump(){
     ctx.moveTo(bx + 6, by + 8); ctx.lineTo(bx + 6 + sw2, by + 14);
     ctx.stroke();
 
-    $("j-now").textContent = Math.floor(J.score);
+    const nowEl = $("j-now");
+    if (nowEl) nowEl.textContent = Math.floor(J.score);
   }
 
   J.raf = requestAnimationFrame(loop);
